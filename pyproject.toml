@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hassle"
+authors = [{name="Matt Manes", email="mattmanes@pm.me"}]
+description = "Create, build, test, and publish Python projects and packages."
+version = "1.0.0"
+requires-python = ">=3.10"
+dependencies = [
+    "tomlkit==0.11.6", 
+    "black", 
+    "isort", 
+    "pytest~=7.2.1", 
+    "coverage",
+    "packagelister~=1.1.2",
+    "vermin==1.5.1",
+    "pdoc",
+    "twine",
+    "auto-changelog",
+    "bs4==0.0.1",
+    "requests~=2.28.1",
+    "build"
+    ]
+readme = "README.md"
+keywords = ["devops", "packaging", "build", "test", "automation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    ]
+
+[project.urls]
+"Homepage" = "https://github.com/matt-manes/hassle"
+"Documentation" = "https://github.com/matt-manes/hassle/tree/main/docs"
+"Source code" = "https://github.com/matt-manes/hassle/tree/main/src/hassle"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    ]
+pythonpath = "src"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".coverage",
+    ".pytest_cache",
+    ".vscode",
+    "tests",
+    "notes.txt",
+    ".gitignore",
+    "hassle_config.toml"
+    ]
+[project.scripts]
+hassle = "hassle.hassle:main"
+new_project = "hassle.new_project:main"
+generate_tests = "hassle.generate_tests:main"
+run_tests = "hassle.run_tests:main"
+hassle_config = "hassle.hassle_config:main"
+check_pypi = "hassle.new_project:check_pypi_for_name_cli"

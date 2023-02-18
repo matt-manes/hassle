@@ -1,0 +1,8 @@
+__pycache__
+.coverage
+.vscode
+.pytest_cache
+hassle_config.toml
+scratch.py
+hassle_notes.txt
+TODO.txt
