@@ -2,10 +2,10 @@ import os
 import shutil
 from pathlib import Path
 
-import packagelister
 import tomlkit
 import vermin
 
+import packagelister
 from hassle import hassle_config
 
 root = Path(__file__).parent
@@ -105,7 +105,7 @@ def update_changelog(pyproject_path: Path):
     else:
         hassle_config.warn()
         print("Creating blank hassle_config.toml...")
-        config = hassle_config.load_template()
+        config = hassle_config.load_config()
     changelog_path = pyproject_path.parent / "CHANGELOG.md"
     os.system(
         f"auto-changelog -p {pyproject_path.parent} --tag-prefix {config['git']['tag_prefix']} --unreleased -v {meta['project']['version']} -o {changelog_path}"
