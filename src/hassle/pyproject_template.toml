@@ -18,9 +18,9 @@ classifiers = [
     ]
 
 [project.urls]
-"Homepage" = "https://github.com/matt-manes/$name"
-"Documentation" = "https://github.com/matt-manes/$name/tree/main/docs"
-"Source code" = "https://github.com/matt-manes/$name/tree/main/src/$name"
+"Homepage" = ""
+"Documentation" = ""
+"Source code" = ""
 
 [tool.pytest.ini_options]
 addopts = [
