@@ -2,10 +2,10 @@ import os
 import shutil
 from pathlib import Path
 
+import packagelister
 import tomlkit
 import vermin
 
-import packagelister
 from hassle import hassle_config
 
 root = Path(__file__).parent
