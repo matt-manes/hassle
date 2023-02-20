@@ -26,6 +26,7 @@ def run_tests(package_path: Path):
     """Run tests with coverage and pytest."""
     startdir = Path().cwd()
     os.chdir(package_path)
+    os.system(f"pip install -e .")
     os.system(f"coverage run -m pytest -s")
     os.system(f"coverage report -m")
     os.chdir(startdir)
