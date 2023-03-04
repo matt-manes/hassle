@@ -95,6 +95,13 @@ def get_args() -> argparse.Namespace:
         This only affects the 'classifiers' field of pyproject.toml .""",
     )
 
+    parser.add_argument(
+        "-np",
+        "--not_package",
+        action="store_true",
+        help=""" Put source files in top level directory and delete tests folder. """,
+    )
+
     args = parser.parse_args()
     args.source_files.extend(["__init__.py", f"{args.name}.py"])
 
@@ -219,16 +226,19 @@ def create_vscode_settings(targetdir: Path):
 def main(args: argparse.Namespace = None):
     if not args:
         args = get_args()
-    try:
-        if check_pypi_for_name(args.name):
-            print(f"{args.name} already exists on pypi.org")
+    if not args.not_package:
+        try:
+            if check_pypi_for_name(args.name):
+                print(f"{args.name} already exists on pypi.org")
+                if not get_answer("Continue anyway?"):
+                    sys.exit(0)
+        except Exception as e:
+            print(e)
+            print(
+                f"Couldn't verify that {args.name} doesn't already exist on pypi.org ."
+            )
             if not get_answer("Continue anyway?"):
                 sys.exit(0)
-    except Exception as e:
-        print(e)
-        print(f"Couldn't verify that {args.name} doesn't already exist on pypi.org .")
-        if not get_answer("Continue anyway?"):
-            sys.exit(0)
     try:
         targetdir = Path.cwd() / args.name
         try:
@@ -237,16 +247,22 @@ def main(args: argparse.Namespace = None):
             print(f"{targetdir} already exists.")
             if not get_answer("Overwrite?"):
                 sys.exit(0)
-        create_pyproject_file(targetdir, args)
-        create_source_files((targetdir / "src" / args.name), args.source_files)
+        if not args.not_package:
+            create_pyproject_file(targetdir, args)
+        create_source_files(
+            targetdir if args.not_package else (targetdir / "src" / args.name),
+            args.source_files[1:] if args.not_package else args.source_files,
+        )
         create_readme(targetdir, args)
-        generate_test_files(targetdir)
+        if not args.not_package:
+            generate_test_files(targetdir)
+            create_vscode_settings(targetdir)
         create_gitignore(targetdir)
-        create_vscode_settings(targetdir)
         if not args.no_license:
             create_license(targetdir)
         os.chdir(targetdir)
         os.system("git init -b main")
+
     except Exception as e:
         if not "Aborting new package creation" in str(e):
             print(e)

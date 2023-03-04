@@ -89,6 +89,7 @@ def test__new_project__main():
             self.add_script = True
             self.no_license = False
             self.operating_system = None
+            self.not_package = False
 
     os.chdir(root)
     args = MockArgs()
