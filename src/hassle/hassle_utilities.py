@@ -58,7 +58,9 @@ def generate_docs(package_path: Path):
     )
 
 
-def update_dependencies(pyproject_path: Path, overwrite: bool):
+def update_dependencies(
+    pyproject_path: Path, overwrite: bool, include_versions: bool = False
+):
     """Update dependencies list in pyproject.toml.
 
     :param overwrite: If True, replace the dependencies in pyproject.toml
@@ -70,7 +72,7 @@ def update_dependencies(pyproject_path: Path, overwrite: bool):
 
     packages = [
         f"{package}~={packages[package]['version']}"
-        if packages[package]["version"]
+        if packages[package]["version"] and include_versions
         else f"{package}"
         for package in packages
         if package != pyproject_path.parent.stem

@@ -115,6 +115,14 @@ def get_args() -> argparse.Namespace:
         help=""" Pull from github, then push current commit to repo. """,
     )
 
+    parser.add_argument(
+        "-dv",
+        "--dependency_versions",
+        action="store_true",
+        help=""" Include version specifiers for dependencies in
+        pyproject.toml.""",
+    )
+
     args = parser.parse_args()
 
     args.package = Path(args.package).resolve()
