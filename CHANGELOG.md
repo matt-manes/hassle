@@ -1,11 +1,23 @@
 # Changelog
 
-## 2.0.2 (2023-02-20)
+## 2.2.0 (2023-03-22)
+
+#### New Features
+
+* make dependency versions optional
+* add alt structure for non-package projects
+
+
+## v2.0.2 (2023-02-20)
 
 #### Fixes
 
 * add 'pip install -e .' cmd
 * add missing '>=' to min py version in template
+#### Others
+
+* build v2.0.2
+* update changelog
 
 
 ## v2.0.1 (2023-02-18)
