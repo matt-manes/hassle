@@ -1,11 +1,32 @@
 # Changelog
 
-## 2.2.0 (2023-03-22)
+## 2.3.0 (2023-03-31)
+
+#### New Features
+
+* add -up/--update switch to hassle cli
+#### Fixes
+
+* add missing letter in commit_all git command
+* fix pip install command arguments
+#### Refactorings
+
+* remove uneccessary git command in commit_all block
+#### Others
+
+* update readme
+
+
+## v2.2.0 (2023-03-22)
 
 #### New Features
 
 * make dependency versions optional
 * add alt structure for non-package projects
+#### Others
+
+* build v2.2.0
+* update changelog
 
 
 ## v2.0.2 (2023-02-20)
