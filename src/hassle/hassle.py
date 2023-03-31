@@ -190,7 +190,7 @@ def main(args: argparse.Namespace = None):
         if args.commit_all == "build":
             version = tomlkit.loads(pyproject_path.read_text())["project"]["version"]
             args.commit_all = f"chore: build v{version}"
-        os.system(f'git commit -m "{args.commit_all}"')
+        os.system(f'git commit -am "{args.commit_all}"')
 
     if args.tag_version:
         hassle_utilities.tag_version(args.package)
