@@ -71,7 +71,7 @@ The -h/--help switch produces the following:
 
 <pre>
 C:\python>new_project -h
-usage: new_project [-h] [-s [SOURCE_FILES ...]] [-d DESCRIPTION] [-dp [DEPENDENCIES ...]] [-k [KEYWORDS ...]] [-as] [-nl] [-os [OPERATING_SYSTEM ...]] name
+usage: new_project [-h] [-s [SOURCE_FILES ...]] [-d DESCRIPTION] [-dp [DEPENDENCIES ...]] [-k [KEYWORDS ...]] [-as] [-nl] [-os [OPERATING_SYSTEM ...]] [-np] name
 
 positional arguments:
   name                  Name of the package to create in the current working directory.
@@ -83,14 +83,15 @@ options:
   -d DESCRIPTION, --description DESCRIPTION
                         The package description to be added to the pyproject.toml file.
   -dp [DEPENDENCIES ...], --dependencies [DEPENDENCIES ...]
-                        List of dependencies to add to pyproject.toml. Note: hassle.py will automatically scan your project for 3rd party imports and update pyproject.toml. This switch is largely useful for adding dependencies your project might need, but doesn't directly import in
-                        any source files, like an os.system() call that invokes a 3rd party cli.
+                        List of dependencies to add to pyproject.toml. Note: hassle.py will automatically scan your project for 3rd party imports and update pyproject.toml. This switch is largely useful for adding dependencies your project might need, but doesn't directly import
+                        in any source files, like an os.system() call that invokes a 3rd party cli.
   -k [KEYWORDS ...], --keywords [KEYWORDS ...]
                         List of keywords to be added to the keywords field in pyproject.toml.
   -as, --add_script     Add section to pyproject.toml declaring the package should be installed with command line scripts added. The default is '{name} = "{name}.{name}:main". You will need to manually change this field.
   -nl, --no_license     By default, projects are created with an MIT license. Set this flag to avoid adding a license if you want to configure licensing at another time.
   -os [OPERATING_SYSTEM ...], --operating_system [OPERATING_SYSTEM ...]
                         List of operating systems this package will be compatible with. The default is OS Independent. This only affects the 'classifiers' field of pyproject.toml .
+  -np, --not_package    Put source files in top level directory and delete tests folder.
 </pre>
 
 Most of these options pertain to prefilling the generated 'pyproject.toml' file.<br>
@@ -505,7 +506,7 @@ For reference, here is the full `-h/--help` output for hassle:
 
 <pre>
 >hassle -h
-usage: hassle [-h] [-b] [-t] [-i] [-iv INCREMENT_VERSION] [-p] [-rt] [-gt] [-uc] [-od] [-ca COMMIT_ALL] [-s] [package]
+usage: hassle [-h] [-b] [-t] [-i] [-iv INCREMENT_VERSION] [-p] [-rt] [-gt] [-uc] [-od] [-ca COMMIT_ALL] [-s] [-dv] [-up UPDATE] [package]
 
 positional arguments:
   package               The name of the package or project to use, assuming it's a subfolder of your current working directory. Can also be a full path to the package. If nothing is given, the current working directory will be used.
@@ -529,4 +530,8 @@ options:
   -ca COMMIT_ALL, --commit_all COMMIT_ALL
                         Git stage and commit all tracked files with this supplied commit message. If 'build' is passed, all commits will have message: 'chore: build v{current_version}
   -s, --sync            Pull from github, then push current commit to repo.
+  -dv, --dependency_versions
+                        Include version specifiers for dependencies in pyproject.toml.
+  -up UPDATE, --update UPDATE
+                        Excpects one argument: "major", "minor", or "patch". Passing "-up minor" is equivalent to passing the cli string: "-b -t -i -iv minor -uc -ca build -s". To publish the updated package, the -p/--publish switch needs to be added to the cli input.
 </pre>
