@@ -123,6 +123,8 @@ def get_args() -> argparse.Namespace:
         pyproject.toml.""",
     )
 
+    parser.add_argument("-u", "--update", type=str, default=None, help="""  """)
+
     args = parser.parse_args()
 
     args.package = Path(args.package).resolve()
@@ -199,7 +201,7 @@ def main(args: argparse.Namespace = None):
 
     if args.install:
         os.system(
-            f"pip install --no-deps -U --no-cache-dir {args.package.stem if args.publish else args.package}"
+            f"pip install {args.package.stem if args.publish else args.package} --no-deps --upgrade --no-cache-dir"
         )
 
     if args.sync:
