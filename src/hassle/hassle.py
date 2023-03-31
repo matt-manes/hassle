@@ -123,11 +123,28 @@ def get_args() -> argparse.Namespace:
         pyproject.toml.""",
     )
 
-    parser.add_argument("-u", "--update", type=str, default=None, help="""  """)
+    parser.add_argument(
+        "-up",
+        "--update",
+        type=str,
+        default=None,
+        help=""" Excpects one argument: "major", "minor", or "patch".
+        Passing "-up minor" is equivalent to passing the cli string: "-b -t -i -iv minor -uc -ca build -s".
+        To publish the updated package, the -p/--publish switch needs to be added to the cli input.""",
+    )
 
     args = parser.parse_args()
 
     args.package = Path(args.package).resolve()
+
+    if args.update:
+        args.build = True
+        args.tag_version = True
+        args.install = True
+        args.increment_version = args.update
+        args.update_changelog = True
+        args.commit_all = "build"
+        args.sync = True
 
     if args.increment_version and args.increment_version not in [
         "major",
