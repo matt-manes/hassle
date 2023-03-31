@@ -1,6 +1,16 @@
 # Changelog
 
-## 2.3.0 (2023-03-31)
+## 2.3.1 (2023-03-31)
+
+#### Fixes
+
+* fix commit_all not adding untracked files in /dist
+#### Others
+
+* build v2.3.0
+
+
+## v2.3.0 (2023-03-31)
 
 #### New Features
 
@@ -14,6 +24,8 @@
 * remove uneccessary git command in commit_all block
 #### Others
 
+* build v2.3.0
+* update changelog
 * update readme
 
 
