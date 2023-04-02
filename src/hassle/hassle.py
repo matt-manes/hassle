@@ -217,9 +217,7 @@ def main(args: argparse.Namespace = None):
         os.system(f"twine upload {args.package / 'dist' / '*'}")
 
     if args.install:
-        os.system(
-            f"pip install {args.package.stem if args.publish else args.package} --no-deps --upgrade --no-cache-dir"
-        )
+        os.system(f"pip install {args.package} --no-deps --upgrade --no-cache-dir")
 
     if args.sync:
         os.chdir(args.package)
