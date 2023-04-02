@@ -1,12 +1,21 @@
 # Changelog
 
-## 2.3.1 (2023-03-31)
+## 2.3.2 (2023-04-02)
+
+#### Refactorings
+
+* install command will always isntall local copy b/c pypi doesn't update fast enough
+
+
+## v2.3.1 (2023-03-31)
 
 #### Fixes
 
 * fix commit_all not adding untracked files in /dist
 #### Others
 
+* build v2.3.1
+* update changelog
 * build v2.3.0
 
 
