@@ -1,10 +1,29 @@
 # Changelog
 
-## 2.3.2 (2023-04-02)
+## 2.4.0 (2023-04-07)
+
+#### New Features
+
+* implement manual override for 'tests' location
+* generate_tests cli accepts individual files instead of only directories
+#### Fixes
+
+* add tests_dir.mkdir() to write_placeholders to keep pytest from throwing a fit
+* fix not passing args.tests_dir param to test file generators
+#### Refactorings
+
+* generated test functions will have the form 'test_{function_name}'
+
+
+## v2.3.2 (2023-04-02)
 
 #### Refactorings
 
 * install command will always isntall local copy b/c pypi doesn't update fast enough
+#### Others
+
+* build v2.3.2
+* update changelog
 
 
 ## v2.3.1 (2023-03-31)
