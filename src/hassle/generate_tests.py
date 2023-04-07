@@ -75,6 +75,7 @@ def write_placeholders(
     package_name = package_path.stem
     if not tests_dir:
         tests_dir = package_path / "tests"
+    tests_dir.mkdir()
     pyfile = Pathier(pyfile)
     test_file = tests_dir / f"test_{pyfile.name}"
     # Makes sure not to overwrite previously written tests
