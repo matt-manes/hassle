@@ -21,6 +21,20 @@ def get_args() -> argparse.Namespace:
         Can also be individual files.""",
     )
 
+    parser.add_argument(
+        "-t",
+        "--tests_dir",
+        type=str,
+        default=None,
+        help=""" A specific tests directory path to write tests to.
+        When supplying individual files to paths arg, the default
+        behavior is to create a 'tests' directory in the parent 
+        directory of the specified file, resulting in multiple 
+        'tests' directories being created if the files exist in
+        subdirectories. Supply a path to this arg to override
+        this behavior.""",
+    )
+
     args = parser.parse_args()
     return args
 
@@ -47,7 +61,7 @@ def write_placeholders(
     """Write placeholder functions to the
     tests/test_{pyfile} file if they don't already exist.
     The placeholder functions use the naming convention
-    test__{pyfile.name}__{function_name}
+    test_{function_name}
 
     :param package_path: Path to the package.
 
@@ -67,7 +81,7 @@ def write_placeholders(
     else:
         content = f"import pytest\nfrom {package_name} import {pyfile.stem}\n\n\n"
     for function in functions:
-        test_function = f"def test__{pyfile.stem}__{function}"
+        test_function = f"def test_{function}"
         if test_function not in content and function != "__init__":
             content += f"{test_function}():\n    ...\n\n\n"
     test_file.write_text(content)
