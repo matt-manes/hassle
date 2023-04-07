@@ -55,7 +55,7 @@ def test__generatetests__generate_test_files():
 def test__generatetests__main():
     class MockArgs:
         def __init__(self, package_name):
-            self.package_name = package_name
+            self.paths = [package_name]
 
     for arg in ["dummy", "."]:
         if arg == "dummy":
@@ -76,6 +76,15 @@ def test__generatetests__main():
             assert f"def test__more_dummy__{function}():\n    ..." in content
 
         shutil.rmtree(test_dummy_path.parent)
+    # ================================single file================================
+    os.chdir(root / "dummy" / "src" / "dummy")
+    args = MockArgs("dummy.py")
+    generate_tests.main(args)
+    test_dummy_path = root / "dummy" / "src" / "dummy" / "tests" / "test_dummy.py"
+    content = test_dummy_path.read_text()
+    for function in dummy_functions:
+        assert f"def test__dummy__{function}():\n    ..." in content
+    shutil.rmtree(test_dummy_path.parent)
 
 
 def test__new_project__main():
