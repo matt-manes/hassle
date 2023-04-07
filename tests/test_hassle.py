@@ -1,8 +1,8 @@
 import os
 import shutil
-from pathier import Pathier
 
 import pytest
+from pathier import Pathier
 
 from hassle import generate_tests, new_project
 

@@ -1,6 +1,7 @@
 import argparse
 import os
 import tokenize
+
 from pathier import Pathier
 
 root = Pathier(__file__).parent
