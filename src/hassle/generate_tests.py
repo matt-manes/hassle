@@ -112,9 +112,11 @@ def main(args: argparse.Namespace = None):
         args.tests_dir = Pathier(args.tests_dir).resolve()
     for path in args.paths:
         if path.is_dir():
-            generate_test_files(path)
+            generate_test_files(path, args.tests_dir)
         elif path.is_file():
-            write_placeholders(path.parent, path, get_function_names(path))
+            write_placeholders(
+                path.parent, path, get_function_names(path), args.tests_dir
+            )
 
 
 if __name__ == "__main__":
