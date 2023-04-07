@@ -56,7 +56,10 @@ def get_function_names(filepath: Pathier) -> list[str]:
 
 
 def write_placeholders(
-    package_path: Pathier, pyfile: Pathier | str, functions: list[str]
+    package_path: Pathier,
+    pyfile: Pathier | str,
+    functions: list[str],
+    tests_dir: Pathier = None,
 ):
     """Write placeholder functions to the
     tests/test_{pyfile} file if they don't already exist.
@@ -70,8 +73,8 @@ def write_placeholders(
     :param functions: List of functions to generate
     placehodlers for."""
     package_name = package_path.stem
-    tests_dir = package_path / "tests"
-    tests_dir.mkdir(parents=True, exist_ok=True)
+    if not tests_dir:
+        tests_dir = package_path / "tests"
     pyfile = Pathier(pyfile)
     test_file = tests_dir / f"test_{pyfile.name}"
     # Makes sure not to overwrite previously written tests
@@ -89,7 +92,7 @@ def write_placeholders(
     os.system(f"isort {tests_dir}")
 
 
-def generate_test_files(package_path: Pathier):
+def generate_test_files(package_path: Pathier, tests_dir: Pathier = None):
     """Generate test files for all .py files in 'src'
     directory of 'package_path'."""
     pyfiles = [
@@ -98,13 +101,15 @@ def generate_test_files(package_path: Pathier):
         if file.name != "__init__.py"
     ]
     for pyfile in pyfiles:
-        write_placeholders(package_path, pyfile, get_function_names(pyfile))
+        write_placeholders(package_path, pyfile, get_function_names(pyfile), tests_dir)
 
 
 def main(args: argparse.Namespace = None):
     if not args:
         args = get_args()
     args.paths = [Pathier(path).resolve() for path in args.paths]
+    if args.tests_dir:
+        args.tests_dir = Pathier(args.tests_dir).resolve()
     for path in args.paths:
         if path.is_dir():
             generate_test_files(path)
