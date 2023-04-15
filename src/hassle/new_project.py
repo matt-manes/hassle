@@ -1,18 +1,16 @@
 import argparse
 import os
-import shutil
 import sys
 from datetime import datetime
-from pathlib import Path
 
 import requests
-import tomlkit
 from bs4 import BeautifulSoup
+from pathier import Pathier
 
 import hassle.hassle_config as hassle_config
 from hassle.generate_tests import generate_test_files
 
-root = Path(__file__).parent
+root = Pathier(__file__).parent
 
 
 def get_args() -> argparse.Namespace:
@@ -155,10 +153,10 @@ def check_pypi_for_name_cli():
         print(f"{args.name} is available.")
 
 
-def create_pyproject_file(targetdir: Path, args: argparse.Namespace):
+def create_pyproject_file(targetdir: Pathier, args: argparse.Namespace):
     """Create pyproject.toml in ./{project_name} from args,
     pyproject_template, and hassle_config."""
-    pyproject = tomlkit.loads((root / "pyproject_template.toml").read_text())
+    pyproject = (root / "pyproject_template.toml").loads()
     if not hassle_config.config_exists():
         hassle_config.warn()
         if not get_answer("Continue creating new package with blank config?"):
@@ -184,17 +182,17 @@ def create_pyproject_file(targetdir: Path, args: argparse.Namespace):
         )
     if args.add_script:
         pyproject["project"]["scripts"][args.name] = f"{args.name}.{args.name}:main"
-    (targetdir / "pyproject.toml").write_text(tomlkit.dumps(pyproject))
+    (targetdir / "pyproject.toml").dumps(pyproject)
 
 
-def create_source_files(srcdir: Path, filelist: list[str]):
+def create_source_files(srcdir: Pathier, filelist: list[str]):
     """Generate empty source files in ./{package_name}/src/{package_name}/"""
     srcdir.mkdir(parents=True, exist_ok=True)
     for file in filelist:
         (srcdir / file).touch()
 
 
-def create_readme(targetdir: Path, args: argparse.Namespace):
+def create_readme(targetdir: Pathier, args: argparse.Namespace):
     """Create README.md in ./{package_name}
     from readme_template and args."""
     readme = (root / "README_template.md").read_text()
@@ -204,23 +202,23 @@ def create_readme(targetdir: Path, args: argparse.Namespace):
     (targetdir / "README.md").write_text(readme)
 
 
-def create_license(targetdir: Path):
+def create_license(targetdir: Pathier):
     """Add MIT license file to ./{package_name} ."""
     license_template = (root / "license_template.txt").read_text()
     license_template = license_template.replace("$year", str(datetime.now().year))
     (targetdir / "LICENSE.txt").write_text(license_template)
 
 
-def create_gitignore(targetdir: Path):
+def create_gitignore(targetdir: Pathier):
     """Add .gitignore to ./{package_name}"""
-    shutil.copy(root / ".gitignore_template", targetdir / ".gitignore")
+    (root / ".gitignore_template").copy(targetdir / ".gitignore", True)
 
 
-def create_vscode_settings(targetdir: Path):
+def create_vscode_settings(targetdir: Pathier):
     """Add settings.json to ./.vscode"""
     vsdir = targetdir / ".vscode"
     vsdir.mkdir(parents=True, exist_ok=True)
-    shutil.copy(root / ".vscode_template", vsdir / "settings.json")
+    (root / ".vscode_template").copy(vsdir / "settings.json", True)
 
 
 def main(args: argparse.Namespace = None):
@@ -240,7 +238,7 @@ def main(args: argparse.Namespace = None):
             if not get_answer("Continue anyway?"):
                 sys.exit(0)
     try:
-        targetdir = Path.cwd() / args.name
+        targetdir: Pathier = Pathier.cwd() / args.name
         try:
             targetdir.mkdir(parents=True, exist_ok=False)
         except:
@@ -267,7 +265,7 @@ def main(args: argparse.Namespace = None):
         if not "Aborting new package creation" in str(e):
             print(e)
         if get_answer("Delete created files?"):
-            shutil.rmtree(targetdir)
+            targetdir.delete()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 import argparse
 import os
-from pathlib import Path
+
+from pathier import Pathier
 
 
 def get_args() -> argparse.Namespace:
@@ -22,9 +23,9 @@ def get_args() -> argparse.Namespace:
     return args
 
 
-def run_tests(package_path: Path):
+def run_tests(package_path: Pathier):
     """Run tests with coverage and pytest."""
-    startdir = Path().cwd()
+    startdir = Pathier().cwd()
     os.chdir(package_path)
     os.system(f"pip install -e .")
     os.system(f"coverage run -m pytest -s")
@@ -35,7 +36,7 @@ def run_tests(package_path: Path):
 def main(args: argparse.Namespace = None):
     if not args:
         args = get_args()
-    package_path = Path(args.package_name).resolve()
+    package_path = Pathier(args.package_name).resolve()
     run_tests(package_path)
 
 

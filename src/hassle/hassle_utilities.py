@@ -1,23 +1,21 @@
 import os
-import shutil
-from pathlib import Path
 
 import packagelister
-import tomlkit
 import vermin
+from pathier import Pathier
 
 from hassle import hassle_config
 
-root = Path(__file__).parent
+root = Pathier(__file__).parent
 
 
-def increment_version(pyproject_path: Path, increment_type: str):
+def increment_version(pyproject_path: Pathier, increment_type: str):
     """Increment the project.version field in pyproject.toml.
 
     :param package_path: Path to the package/project directory.
 
     :param increment_type: One from 'major', 'minor', or 'patch'."""
-    meta = tomlkit.loads(pyproject_path.read_text())
+    meta = pyproject_path.loads()
     major, minor, patch = [int(num) for num in meta["project"]["version"].split(".")]
     if increment_type == "major":
         major += 1
@@ -30,27 +28,27 @@ def increment_version(pyproject_path: Path, increment_type: str):
         patch += 1
     incremented_version = ".".join(str(num) for num in [major, minor, patch])
     meta["project"]["version"] = incremented_version
-    pyproject_path.write_text(tomlkit.dumps(meta))
+    pyproject_path.dumps(meta)
 
 
-def update_minimum_python_version(pyproject_path: Path):
+def update_minimum_python_version(pyproject_path: Pathier):
     """Use vermin to determine the minimum compatible
     Python version and update the corresponding field
     in pyproject.toml."""
     project_code = "\n".join(
         file.read_text() for file in (pyproject_path.parent / "src").rglob("*.py")
     )
-    meta = tomlkit.loads(pyproject_path.read_text())
+    meta = pyproject_path.loads()
     minimum_version = vermin.visit(project_code, vermin.Config()).minimum_versions()[1]
     minimum_version = f">={minimum_version[0]}.{minimum_version[1]}"
     meta["project"]["requires-python"] = minimum_version
-    pyproject_path.write_text(tomlkit.dumps(meta))
+    pyproject_path.dumps(meta)
 
 
-def generate_docs(package_path: Path):
+def generate_docs(package_path: Pathier):
     """Generate project documentation using pdoc."""
     try:
-        shutil.rmtree(package_path / "docs")
+        (package_path / "docs").delete()
     except Exception as e:
         pass
     os.system(
@@ -59,7 +57,7 @@ def generate_docs(package_path: Path):
 
 
 def update_dependencies(
-    pyproject_path: Path, overwrite: bool, include_versions: bool = False
+    pyproject_path: Pathier, overwrite: bool, include_versions: bool = False
 ):
     """Update dependencies list in pyproject.toml.
 
@@ -81,7 +79,7 @@ def update_dependencies(
         package.replace("speech_recognition", "speechRecognition")
         for package in packages
     ]
-    meta = tomlkit.loads(pyproject_path.read_text())
+    meta = pyproject_path.loads()
     if overwrite:
         meta["project"]["dependencies"] = packages
     else:
@@ -96,12 +94,12 @@ def update_dependencies(
                 name not in dependency for dependency in meta["project"]["dependencies"]
             ):
                 meta["project"]["dependencies"].append(package)
-    pyproject_path.write_text(tomlkit.dumps(meta))
+    pyproject_path.dumps(meta)
 
 
-def update_changelog(pyproject_path: Path):
+def update_changelog(pyproject_path: Pathier):
     """Update project changelog."""
-    meta = tomlkit.loads(pyproject_path.read_text())
+    meta = pyproject_path.loads()
     if hassle_config.config_exists():
         config = hassle_config.load_config()
     else:
@@ -117,7 +115,7 @@ def update_changelog(pyproject_path: Path):
     changelog_path.write_text("\n".join(changelog))
 
 
-def tag_version(package_path: Path):
+def tag_version(package_path: Pathier):
     """Add a git tag corresponding
     to the version number in pyproject.toml."""
     if hassle_config.config_exists():
@@ -125,8 +123,6 @@ def tag_version(package_path: Path):
     else:
         hassle_config.warn()
         tag_prefix = ""
-    version = tomlkit.loads((package_path / "pyproject.toml").read_text())["project"][
-        "version"
-    ]
+    version = (package_path / "pyproject.toml").loads()["project"]["version"]
     os.chdir(package_path)
     os.system(f"git tag {tag_prefix}{version}")

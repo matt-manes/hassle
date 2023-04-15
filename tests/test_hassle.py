@@ -1,6 +1,3 @@
-import os
-import shutil
-
 import pytest
 from pathier import Pathier
 
@@ -23,7 +20,7 @@ def test__generatetests__get_function_names():
 
 def test__generatetests__write_placeholders():
     startdir = Pathier.cwd()
-    os.chdir(startdir / "tests" / "dummy")
+    (startdir / "tests" / "dummy").mkcwd()
     generate_tests.write_placeholders(
         Pathier(startdir / "tests" / "dummy"), "dummy.py", dummy_functions
     )
@@ -32,8 +29,8 @@ def test__generatetests__write_placeholders():
     content = test_dummy_path.read_text()
     for function in dummy_functions:
         assert f"def test_{function}():\n    ..." in content
-    shutil.rmtree(test_dummy_path.parent)
-    os.chdir(startdir)
+    test_dummy_path.parent.delete()
+    startdir.mkcwd()
 
 
 def test__generatetests__generate_test_files():
@@ -49,7 +46,7 @@ def test__generatetests__generate_test_files():
     for function in more_dummy_functions:
         assert f"def test_{function}():\n    ..." in content
 
-    shutil.rmtree(test_dummy_path.parent)
+    test_dummy_path.parent.delete()
 
 
 def test__generatetests__main():
@@ -60,9 +57,9 @@ def test__generatetests__main():
 
     for arg in ["dummy", "."]:
         if arg == "dummy":
-            os.chdir(root)
+            root.mkcwd()
         if arg == ".":
-            os.chdir(root / "dummy")
+            (root / "dummy").mkcwd()
         args = MockArgs(arg)
 
         generate_tests.main(args)
@@ -78,14 +75,14 @@ def test__generatetests__main():
 
     test_dummy_path.parent.delete()
     # ================================single file================================
-    os.chdir(root / "dummy")
+    (root / "dummy").mkcwd()
     args = MockArgs("src/dummy/dummy.py", "secondary_tests_dir")
     generate_tests.main(args)
     test_dummy_path = root / "dummy" / "secondary_tests_dir" / "test_dummy.py"
     content = test_dummy_path.read_text()
     for function in dummy_functions:
         assert f"def test_{function}():\n    ..." in content
-    shutil.rmtree(test_dummy_path.parent)
+    test_dummy_path.parent.delete()
 
 
 def test__new_project__main():
@@ -101,7 +98,7 @@ def test__new_project__main():
             self.operating_system = None
             self.not_package = False
 
-    os.chdir(root)
+    root.mkcwd()
     args = MockArgs()
     new_project.main(args)
     name = "dummypack"
@@ -132,5 +129,5 @@ def test__new_project__main():
     assert_exists("LICENSE.txt")
     assert_exists(".vscode")
     assert_exists(".git")
-    os.chdir(root.parent)
-    shutil.rmtree(dumpath)
+    root.parent.mkcwd()
+    dumpath.delete()

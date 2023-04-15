@@ -1,9 +1,8 @@
 import argparse
-from pathlib import Path
 
-import tomlkit
+from pathier import Pathier
 
-root = Path(__file__).parent
+root = Pathier(__file__).parent
 
 
 def get_args() -> argparse.Namespace:
@@ -78,7 +77,7 @@ def config_exists() -> bool:
 def load_config() -> dict:
     "Load and return hassle_config contents if it exists."
     if config_exists():
-        return tomlkit.loads((root / "hassle_config.toml").read_text())
+        return (root / "hassle_config.toml").loads()
     else:
         raise FileNotFoundError(
             f"load_config() could not find {root/'hassle_config.toml'}.\nRun hassle_config to set it."
@@ -87,7 +86,7 @@ def load_config() -> dict:
 
 def write_config(config: dict):
     """Dump config to "hassle_config.toml."""
-    (root / "hassle_config.toml").write_text(tomlkit.dumps(config))
+    (root / "hassle_config.toml").dumps(config)
 
 
 def warn():

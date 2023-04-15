@@ -1,15 +1,11 @@
 import argparse
 import os
-import shutil
 
-
-import tomlkit
+from pathier import Pathier
 
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
 from hassle.run_tests import run_tests
-
-from pathier import Pathier
 
 root = Pathier(__file__).parent
 
@@ -182,10 +178,7 @@ def main(args: argparse.Namespace = None):
         hassle_utilities.increment_version(pyproject_path, args.increment_version)
 
     if args.build:
-        try:
-            shutil.rmtree(f"{args.package}/dist")
-        except Exception as e:
-            pass
+        (args.package / "dist").delete()
         os.system(f"black {args.package}")
         os.system(f"isort {args.package}")
         hassle_utilities.update_dependencies(
@@ -207,7 +200,7 @@ def main(args: argparse.Namespace = None):
     if args.commit_all:
         os.chdir(args.package)
         if args.commit_all == "build":
-            version = tomlkit.loads(pyproject_path.read_text())["project"]["version"]
+            version = pyproject_path.loads()["project"]["version"]
             args.commit_all = f"chore: build v{version}"
         os.system("git add .")
         os.system(f'git commit -m "{args.commit_all}"')
