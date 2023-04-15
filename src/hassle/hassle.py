@@ -1,7 +1,7 @@
 import argparse
 import os
 import shutil
-from pathlib import Path
+
 
 import tomlkit
 
@@ -9,7 +9,9 @@ from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
 from hassle.run_tests import run_tests
 
-root = Path(__file__).parent
+from pathier import Pathier
+
+root = Pathier(__file__).parent
 
 
 def get_args() -> argparse.Namespace:
@@ -135,7 +137,7 @@ def get_args() -> argparse.Namespace:
 
     args = parser.parse_args()
 
-    args.package = Path(args.package).resolve()
+    args.package = Pathier(args.package).resolve()
 
     if args.update:
         args.build = True
