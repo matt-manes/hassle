@@ -1,7 +1,7 @@
 import pytest
 from pathier import Pathier
 
-from hassle import generate_tests, new_project
+from hassle import generate_tests, hassle_utilities, new_project
 
 root = Pathier(__file__).parent
 dummy_functions = ["one", "two", "three", "check_check", "is_this_thing_on"]
@@ -131,3 +131,10 @@ def test__new_project__main():
     assert_exists(".git")
     root.parent.mkcwd()
     dumpath.delete()
+
+
+def test_get_minimum_py_version():
+    proj = root - 1
+    src = hassle_utilities.get_project_code(proj / "src")
+    min_ver = hassle_utilities.get_minimum_py_version(src)
+    print(min_ver)
