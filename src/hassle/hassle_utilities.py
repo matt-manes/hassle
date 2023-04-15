@@ -41,13 +41,17 @@ def get_minimum_py_version(src: str) -> tuple[str, str]:
     return vermin.visit(src, config).minimum_versions()[1]
 
 
+def get_project_code(project_path: Pathier) -> str:
+    """Read and return all code from project_path
+    as one string."""
+    return "\n".join(file.read_text() for file in project_path.rglob("*.py"))
+
+
 def update_minimum_python_version(pyproject_path: Pathier):
     """Use vermin to determine the minimum compatible
     Python version and update the corresponding field
     in pyproject.toml."""
-    project_code = "\n".join(
-        file.read_text() for file in (pyproject_path.parent / "src").rglob("*.py")
-    )
+    project_code = get_project_code(pyproject_path.parent / "src")
     meta = pyproject_path.loads()
     minimum_version = get_minimum_py_version(project_code)
     minimum_version = f">={minimum_version[0]}.{minimum_version[1]}"
