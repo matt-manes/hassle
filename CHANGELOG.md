@@ -1,6 +1,19 @@
 # Changelog
 
-## 2.4.0 (2023-04-07)
+## 2.5.0 (2023-04-15)
+
+#### Fixes
+
+* fix already exist error by switching pathlib to pathier
+#### Refactorings
+
+* replace pathlib, os.chdir, and shutil calls with pathier
+#### Others
+
+* prune dependencies
+
+
+## v2.4.0 (2023-04-07)
 
 #### New Features
 
@@ -13,6 +26,10 @@
 #### Refactorings
 
 * generated test functions will have the form 'test_{function_name}'
+#### Others
+
+* build v2.4.0
+* update changelog
 
 
 ## v2.3.2 (2023-04-02)
