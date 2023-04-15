@@ -31,14 +31,15 @@ def increment_version(pyproject_path: Pathier, increment_type: str):
     pyproject_path.dumps(meta)
 
 
-def get_minimum_py_version(src: str) -> tuple[str, str]:
+def get_minimum_py_version(src: str) -> str:
     """Scan src with vermin and return minimum
     python version."""
     config = vermin.Config()
     config.add_backport("typing")
     config.add_backport("typing_extensions")
     config.set_eval_annotations(True)
-    return vermin.visit(src, config).minimum_versions()[1]
+    result = vermin.visit(src, config).minimum_versions()[1]
+    return f"{result[0]}.{result[1]}"
 
 
 def get_project_code(project_path: Pathier) -> str:
@@ -54,7 +55,7 @@ def update_minimum_python_version(pyproject_path: Pathier):
     project_code = get_project_code(pyproject_path.parent / "src")
     meta = pyproject_path.loads()
     minimum_version = get_minimum_py_version(project_code)
-    minimum_version = f">={minimum_version[0]}.{minimum_version[1]}"
+    minimum_version = f">={minimum_version}"
     meta["project"]["requires-python"] = minimum_version
     pyproject_path.dumps(meta)
 
