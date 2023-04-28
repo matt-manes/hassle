@@ -193,6 +193,9 @@ def main(args: argparse.Namespace = None):
         # If we're going to add tag for current version
         # commit changelog first
         if args.tag_version:
+            input(
+                "Press enter to continue after optionally pruning the updated changelog..."
+            )
             os.chdir(args.package)
             os.system("git add CHANGELOG.md")
             os.system('git commit CHANGELOG.md -m "chore: update changelog"')
