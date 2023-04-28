@@ -1,6 +1,25 @@
 # Changelog
 
-## 2.5.0 (2023-04-15)
+## 2.7.0 (2023-04-28)
+
+#### Refactorings
+
+* add a pause to manually prune the changelog before committing the autoupdate
+
+
+## v2.6.0 (2023-04-15)
+
+#### Refactorings
+
+* return minimum py version as string
+* extract getting project code into separate function
+* extract vermin scan into separate function
+#### Others
+
+* build v2.6.0
+
+
+## v2.5.0 (2023-04-15)
 
 #### Fixes
 
@@ -10,6 +29,8 @@
 * replace pathlib, os.chdir, and shutil calls with pathier
 #### Others
 
+* build v2.5.0
+* update changelog
 * prune dependencies
 
 
