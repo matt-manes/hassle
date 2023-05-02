@@ -107,8 +107,7 @@ def get_args() -> argparse.Namespace:
 
 
 def get_answer(question: str) -> bool:
-    """Repeatedly ask the user a yes/no question
-    until a 'y' or a 'n' is received."""
+    """Repeatedly ask the user a yes/no question until a 'y' or a 'n' is received."""
     ans = ""
     question = question.strip()
     if "?" not in question:
@@ -125,9 +124,8 @@ def get_answer(question: str) -> bool:
 
 
 def check_pypi_for_name(package_name: str) -> bool:
-    """Check if a package with package_name
-    already exists on pypi.org .
-    Returns True if package name exists.
+    """Check if a package with package_name already exists on `pypi.org`.
+    Returns `True` if package name exists.
     Only checks the first page of results."""
     url = f"https://pypi.org/search/?q={package_name.lower()}"
     response = requests.get(url)
@@ -154,8 +152,7 @@ def check_pypi_for_name_cli():
 
 
 def create_pyproject_file(targetdir: Pathier, args: argparse.Namespace):
-    """Create pyproject.toml in ./{project_name} from args,
-    pyproject_template, and hassle_config."""
+    """Create `pyproject.toml` in `./{project_name}` from args, pyproject_template, and hassle_config."""
     pyproject = (root / "pyproject_template.toml").loads()
     if not hassle_config.config_exists():
         hassle_config.warn()
@@ -186,15 +183,14 @@ def create_pyproject_file(targetdir: Pathier, args: argparse.Namespace):
 
 
 def create_source_files(srcdir: Pathier, filelist: list[str]):
-    """Generate empty source files in ./{package_name}/src/{package_name}/"""
+    """Generate empty source files in `./{package_name}/src/{package_name}/`"""
     srcdir.mkdir(parents=True, exist_ok=True)
     for file in filelist:
         (srcdir / file).touch()
 
 
 def create_readme(targetdir: Pathier, args: argparse.Namespace):
-    """Create README.md in ./{package_name}
-    from readme_template and args."""
+    """Create `README.md` in `./{package_name}` from readme_template and args."""
     readme = (root / "README_template.md").read_text()
     readme = readme.replace("$name", args.name).replace(
         "$description", args.description
@@ -203,19 +199,19 @@ def create_readme(targetdir: Pathier, args: argparse.Namespace):
 
 
 def create_license(targetdir: Pathier):
-    """Add MIT license file to ./{package_name} ."""
+    """Add MIT license file to `./{package_name}`."""
     license_template = (root / "license_template.txt").read_text()
     license_template = license_template.replace("$year", str(datetime.now().year))
     (targetdir / "LICENSE.txt").write_text(license_template)
 
 
 def create_gitignore(targetdir: Pathier):
-    """Add .gitignore to ./{package_name}"""
+    """Add `.gitignore` to `./{package_name}`"""
     (root / ".gitignore_template").copy(targetdir / ".gitignore", True)
 
 
 def create_vscode_settings(targetdir: Pathier):
-    """Add settings.json to ./.vscode"""
+    """Add `settings.json` to `./.vscode`"""
     vsdir = targetdir / ".vscode"
     vsdir.mkdir(parents=True, exist_ok=True)
     (root / ".vscode_template").copy(vsdir / "settings.json", True)
