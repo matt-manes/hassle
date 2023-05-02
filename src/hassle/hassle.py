@@ -184,7 +184,9 @@ def main(args: argparse.Namespace = None):
         hassle_utilities.update_dependencies(
             pyproject_path, args.overwrite_dependencies
         )
-        hassle_utilities.update_minimum_python_version(pyproject_path)
+        # Vermin isn't taking into account the minimum version of dependencies.
+        # Removing from now and defaulting to >=3.10
+        # hassle_utilities.update_minimum_python_version(pyproject_path)
         hassle_utilities.generate_docs(args.package)
         os.system(f"py -m build {args.package}")
 
