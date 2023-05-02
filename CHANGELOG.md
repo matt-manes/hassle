@@ -1,10 +1,27 @@
 # Changelog
 
-## 2.7.0 (2023-04-28)
+## 2.7.1 (2023-05-02)
+
+#### Fixes
+
+* remove update_minimum_python_version from build process since vermin is incorrectly reporting min versions
+#### Refactorings
+
+* set requires-python to >=3.10 in pyproject_template
+#### Docs
+
+* modify doc string formatting
+
+
+## v2.7.0 (2023-04-28)
 
 #### Refactorings
 
 * add a pause to manually prune the changelog before committing the autoupdate
+#### Others
+
+* build v2.7.0
+* update changelog
 
 
 ## v2.6.0 (2023-04-15)
