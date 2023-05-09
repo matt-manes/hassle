@@ -131,6 +131,13 @@ def get_args() -> argparse.Namespace:
         To publish the updated package, the -p/--publish switch needs to be added to the cli input.""",
     )
 
+    parser.add_argument(
+        "-st",
+        "--skip_tests",
+        action="store_true",
+        help=""" Don't run tests when using the -b/--build command. """,
+    )
+
     args = parser.parse_args()
 
     args.package = Pathier(args.package).resolve()
