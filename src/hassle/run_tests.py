@@ -1,6 +1,8 @@
 import argparse
 import os
 
+import coverage
+import pytest
 from pathier import Pathier
 
 
@@ -23,14 +25,19 @@ def get_args() -> argparse.Namespace:
     return args
 
 
-def run_tests(package_path: Pathier):
-    """Run tests with coverage and pytest."""
+def run_tests(package_path: Pathier) -> bool:
+    """Run tests with coverage and pytest.
+
+    Returns True if all tests passed."""
     startdir = Pathier().cwd()
-    os.chdir(package_path)
-    os.system(f"pip install -e .")
-    os.system(f"coverage run -m pytest -s")
-    os.system(f"coverage report -m")
-    os.chdir(startdir)
+    Pathier.mkcwd(package_path)
+    cover = coverage.Coverage()
+    cover.start()
+    results = pytest.main(["-s"])
+    cover.stop()
+    cover.report()
+    Pathier.mkcwd(startdir)
+    return results == 0
 
 
 def main(args: argparse.Namespace = None):
