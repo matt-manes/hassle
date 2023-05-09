@@ -185,6 +185,10 @@ def main(args: argparse.Namespace = None):
         hassle_utilities.increment_version(pyproject_path, args.increment_version)
 
     if args.build:
+        if not args.skip_tests and not run_tests(args.package):
+            raise RuntimeError(
+                f"ERROR: {args.package.stem} failed testing.\nAbandoning build."
+            )
         (args.package / "dist").delete()
         os.system(f"black {args.package}")
         os.system(f"isort {args.package}")
