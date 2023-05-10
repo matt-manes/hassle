@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.8.1 (2023-05-10)
+
+#### Fixes
+
+* modify pip install invocation for better multi-platform support
+#### Others
+
+* remove unused import
+
+
 ## 2.8.0 (2023-05-09)
 
 #### New Features
