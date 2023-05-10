@@ -30,13 +30,13 @@ def run_tests(package_path: Pathier) -> bool:
 
     Returns True if all tests passed."""
     startdir = Pathier().cwd()
-    Pathier.mkcwd(package_path)
+    package_path.mkcwd()
     cover = coverage.Coverage()
     cover.start()
     results = pytest.main(["-s"])
     cover.stop()
     cover.report()
-    Pathier.mkcwd(startdir)
+    startdir.mkcwd()
     return results == 0
 
 
