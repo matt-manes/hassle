@@ -1,10 +1,24 @@
 # Changelog
 
-## 2.8.2 (2023-05-10)
+## 2.8.3 (2023-05-10)
+
+#### Fixes
+
+* fix bug where the package would get built before the version was incremented
+#### Others
+
+* build v2.8.2
+
+
+## v2.8.2 (2023-05-10)
 
 #### Fixes
 
 * swap build and increment_version order so version isn't incremented if build/tests fail
+#### Others
+
+* build v2.8.2
+* update changelog
 
 
 ## v2.8.1 (2023-05-10)
@@ -32,7 +46,7 @@
 * invoke build with sys.executable instead of py
 #### Refactorings
 
-* replace os.system calls to git with gitbetter.git methods
+* replace os.system call to git with gitbetter.git methods
 * replace os.system calls for black and isort with direct invocations
 * extract build process into it's own function
 * make run_tests() invoke pytest and coverage directly and return pytest result
