@@ -169,6 +169,37 @@ def get_args() -> argparse.Namespace:
     return args
 
 
+def build(
+    package_dir: Pathier, skip_tests: bool = False, overwrite_dependencies: bool = False
+):
+    """Perform the build process.
+
+    Steps:
+    * Run tests (unless `skip_tests` is `True`)
+    * Raise error and abandon build if tests fail
+    * Format source code with `Black`
+    * Sort source code imports with `isort`
+    * Update project dependencies in `pyproject.toml`
+    * Generate docs
+    * Delete previous `dist` folder contents
+    * Invoke build module"""
+    if not skip_tests and not run_tests(package_dir):
+        raise RuntimeError(
+            f"ERROR: {package_dir.stem} failed testing.\nAbandoning build."
+        )
+    black.main([str(package_dir)])
+    [isort.file(path) for path in package_dir.rglob("*.py")]
+    hassle_utilities.update_dependencies(
+        package_dir / "pyproject.toml", overwrite_dependencies
+    )
+    # Vermin isn't taking into account the minimum version of dependencies.
+    # Removing from now and defaulting to >=3.10
+    # hassle_utilities.update_minimum_python_version(pyproject_path)
+    hassle_utilities.generate_docs(package_dir)
+    (package_dir / "dist").delete()
+    os.system(f"{sys.executable} -m build {package_dir}")
+
+
 def main(args: argparse.Namespace = None):
     if not args:
         args = get_args()
@@ -188,21 +219,7 @@ def main(args: argparse.Namespace = None):
         hassle_utilities.increment_version(pyproject_path, args.increment_version)
 
     if args.build:
-        if not args.skip_tests and not run_tests(args.package):
-            raise RuntimeError(
-                f"ERROR: {args.package.stem} failed testing.\nAbandoning build."
-            )
-        (args.package / "dist").delete()
-        black.main([str(args.package)])
-        [isort.file(path) for path in args.package.rglob("*.py")]
-        hassle_utilities.update_dependencies(
-            pyproject_path, args.overwrite_dependencies
-        )
-        # Vermin isn't taking into account the minimum version of dependencies.
-        # Removing from now and defaulting to >=3.10
-        # hassle_utilities.update_minimum_python_version(pyproject_path)
-        hassle_utilities.generate_docs(args.package)
-        os.system(f"{sys.executable} -m build {args.package}")
+        build(args.package, args.skip_tests, args.overwrite_dependencies)
 
     if args.update_changelog:
         hassle_utilities.update_changelog(pyproject_path)
