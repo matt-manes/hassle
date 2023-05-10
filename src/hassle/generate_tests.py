@@ -2,6 +2,8 @@ import argparse
 import os
 import tokenize
 
+import black
+import isort
 from pathier import Pathier
 
 root = Pathier(__file__).parent
@@ -90,8 +92,8 @@ def write_placeholders(
         if test_function not in content and function != "__init__":
             content += f"{test_function}():\n    ...\n\n\n"
     test_file.write_text(content)
-    os.system(f"black {tests_dir}")
-    os.system(f"isort {tests_dir}")
+    black.main([str(tests_dir)])
+    [isort.file(path) for path in tests_dir.rglob("*.py")]
 
 
 def generate_test_files(package_path: Pathier, tests_dir: Pathier = None):
