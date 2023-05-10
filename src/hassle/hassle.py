@@ -6,7 +6,6 @@ import isort
 from gitbetter import git
 from pathier import Pathier
 
-
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
 from hassle.run_tests import run_tests
