@@ -6,6 +6,7 @@ import isort
 from gitbetter import git
 from pathier import Pathier
 
+
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
 from hassle.run_tests import run_tests
@@ -248,7 +249,9 @@ def main(args: argparse.Namespace = None):
         os.system(f"twine upload {args.package / 'dist' / '*'}")
 
     if args.install:
-        os.system(f"pip install {args.package} --no-deps --upgrade --no-cache-dir")
+        os.system(
+            f"{sys.executable} -m pip install {args.package} --no-deps --upgrade --no-cache-dir"
+        )
 
     if args.sync:
         git.pull("--tags")
