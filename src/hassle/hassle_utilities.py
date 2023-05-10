@@ -1,5 +1,6 @@
 import os
 
+import black
 import packagelister
 import vermin
 from gitbetter import git
@@ -142,3 +143,11 @@ def tag_version(package_path: Pathier):
     version = (package_path / "pyproject.toml").loads()["project"]["version"]
     os.chdir(package_path)
     git.tag(f"{tag_prefix}{version}")
+
+
+def format_files(path: Pathier):
+    """Use `Black` to format file(s)."""
+    try:
+        black.main([str(path)])
+    except SystemExit:
+        ...

@@ -2,9 +2,9 @@ import argparse
 import os
 import tokenize
 
-import black
 import isort
 from pathier import Pathier
+from hassle import hassle_utilities
 
 root = Pathier(__file__).parent
 
@@ -92,7 +92,7 @@ def write_placeholders(
         if test_function not in content and function != "__init__":
             content += f"{test_function}():\n    ...\n\n\n"
     test_file.write_text(content)
-    black.main([str(tests_dir)])
+    hassle_utilities.format_files(tests_dir)
     [isort.file(path) for path in tests_dir.rglob("*.py")]
 
 

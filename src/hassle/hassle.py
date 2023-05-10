@@ -2,7 +2,6 @@ import argparse
 import os
 import sys
 
-import black
 import isort
 from gitbetter import git
 from pathier import Pathier
@@ -188,7 +187,7 @@ def build(
         raise RuntimeError(
             f"ERROR: {package_dir.stem} failed testing.\nAbandoning build."
         )
-    black.main([str(package_dir)])
+    hassle_utilities.format_files(package_dir)
     [isort.file(path) for path in package_dir.rglob("*.py")]
     hassle_utilities.update_dependencies(
         package_dir / "pyproject.toml", overwrite_dependencies
