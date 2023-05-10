@@ -4,8 +4,8 @@ import sys
 
 import black
 import isort
-from pathier import Pathier
 from gitbetter import git
+from pathier import Pathier
 
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
