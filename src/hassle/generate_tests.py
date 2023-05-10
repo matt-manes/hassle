@@ -1,5 +1,4 @@
 import argparse
-import os
 import tokenize
 
 import isort
