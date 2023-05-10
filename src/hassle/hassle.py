@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 import black
 import isort
@@ -201,7 +202,7 @@ def main(args: argparse.Namespace = None):
         # Removing from now and defaulting to >=3.10
         # hassle_utilities.update_minimum_python_version(pyproject_path)
         hassle_utilities.generate_docs(args.package)
-        os.system(f"py -m build {args.package}")
+        os.system(f"{sys.executable} -m build {args.package}")
 
     if args.update_changelog:
         hassle_utilities.update_changelog(pyproject_path)
