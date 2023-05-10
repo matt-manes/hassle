@@ -1,16 +1,25 @@
 # Changelog
 
-## 2.8.1 (2023-05-10)
+## 2.8.2 (2023-05-10)
+
+#### Fixes
+
+* swap build and increment_version order so version isn't incremented if build/tests fail
+
+
+## v2.8.1 (2023-05-10)
 
 #### Fixes
 
 * modify pip install invocation for better multi-platform support
 #### Others
 
+* build v2.8.1
+* update changelog
 * remove unused import
 
 
-## 2.8.0 (2023-05-09)
+## v2.8.0 (2023-05-09)
 
 #### New Features
 
@@ -29,6 +38,8 @@
 * make run_tests() invoke pytest and coverage directly and return pytest result
 #### Others
 
+* build v2.8.0
+* update changelog
 * remove unused import
 
 
