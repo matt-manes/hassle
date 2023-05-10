@@ -6,6 +6,7 @@ from pathier import Pathier
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
 from hassle.run_tests import run_tests
+import black
 
 root = Pathier(__file__).parent
 
@@ -190,7 +191,7 @@ def main(args: argparse.Namespace = None):
                 f"ERROR: {args.package.stem} failed testing.\nAbandoning build."
             )
         (args.package / "dist").delete()
-        os.system(f"black {args.package}")
+        black.main([str(args.package)])
         os.system(f"isort {args.package}")
         hassle_utilities.update_dependencies(
             pyproject_path, args.overwrite_dependencies
