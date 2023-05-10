@@ -5,6 +5,7 @@ import sys
 import black
 import isort
 from pathier import Pathier
+from gitbetter import git
 
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
@@ -205,6 +206,7 @@ def main(args: argparse.Namespace = None):
         args = get_args()
 
     pyproject_path = args.package / "pyproject.toml"
+    args.package.mkcwd()
 
     if not pyproject_path.exists():
         raise FileNotFoundError(f"Could not locate pyproject.toml for {args.package}")
@@ -229,17 +231,16 @@ def main(args: argparse.Namespace = None):
             input(
                 "Press enter to continue after optionally pruning the updated changelog..."
             )
-            os.chdir(args.package)
-            os.system("git add CHANGELOG.md")
-            os.system('git commit CHANGELOG.md -m "chore: update changelog"')
+            git.commit_files(
+                [str(args.package / "CHANGELOG.md")], "chore: update changelog"
+            )
 
     if args.commit_all:
-        os.chdir(args.package)
         if args.commit_all == "build":
             version = pyproject_path.loads()["project"]["version"]
             args.commit_all = f"chore: build v{version}"
-        os.system("git add .")
-        os.system(f'git commit -m "{args.commit_all}"')
+        git.add()
+        git.commit(f'-m "{args.commit_all}"')
 
     if args.tag_version:
         hassle_utilities.tag_version(args.package)
@@ -251,9 +252,8 @@ def main(args: argparse.Namespace = None):
         os.system(f"pip install {args.package} --no-deps --upgrade --no-cache-dir")
 
     if args.sync:
-        os.chdir(args.package)
-        os.system(f"git pull --tags origin main")
-        os.system(f"git push origin main:main --tags")
+        git.pull("--tags")
+        git.push("--tags")
 
 
 if __name__ == "__main__":
