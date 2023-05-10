@@ -216,11 +216,11 @@ def main(args: argparse.Namespace = None):
     if args.run_tests:
         run_tests(args.package)
 
-    if args.increment_version:
-        hassle_utilities.increment_version(pyproject_path, args.increment_version)
-
     if args.build:
         build(args.package, args.skip_tests, args.overwrite_dependencies)
+
+    if args.increment_version:
+        hassle_utilities.increment_version(pyproject_path, args.increment_version)
 
     if args.update_changelog:
         hassle_utilities.update_changelog(pyproject_path)
