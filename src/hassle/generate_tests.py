@@ -3,6 +3,7 @@ import tokenize
 
 import isort
 from pathier import Pathier
+
 from hassle import hassle_utilities
 
 root = Pathier(__file__).parent
