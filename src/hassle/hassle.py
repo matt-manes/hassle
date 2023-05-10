@@ -1,12 +1,13 @@
 import argparse
 import os
 
+import black
+import isort
 from pathier import Pathier
 
 from hassle import hassle_utilities
 from hassle.generate_tests import generate_test_files
 from hassle.run_tests import run_tests
-import black
 
 root = Pathier(__file__).parent
 
@@ -192,7 +193,7 @@ def main(args: argparse.Namespace = None):
             )
         (args.package / "dist").delete()
         black.main([str(args.package)])
-        os.system(f"isort {args.package}")
+        [isort.file(path) for path in args.package.rglob("*.py")]
         hassle_utilities.update_dependencies(
             pyproject_path, args.overwrite_dependencies
         )
