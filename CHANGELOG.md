@@ -1,6 +1,28 @@
 # Changelog
 
-## 2.7.1 (2023-05-02)
+## 2.8.0 (2023-05-09)
+
+#### New Features
+
+* add tests execution to build command
+* add -st/--skip_tests flag to hassle parser
+#### Fixes
+
+* catch Black.main()'s SystemExit
+* fix Pathier.mkcwd() usage
+* invoke build with sys.executable instead of py
+#### Refactorings
+
+* replace os.system calls to git with gitbetter.git methods
+* replace os.system calls for black and isort with direct invocations
+* extract build process into it's own function
+* make run_tests() invoke pytest and coverage directly and return pytest result
+#### Others
+
+* remove unused import
+
+
+## v2.7.1 (2023-05-02)
 
 #### Fixes
 
@@ -11,6 +33,10 @@
 #### Docs
 
 * modify doc string formatting
+#### Others
+
+* build v2.7.1
+* update changelog
 
 
 ## v2.7.0 (2023-04-28)
