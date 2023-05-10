@@ -170,7 +170,10 @@ def get_args() -> argparse.Namespace:
 
 
 def build(
-    package_dir: Pathier, skip_tests: bool = False, overwrite_dependencies: bool = False
+    package_dir: Pathier,
+    skip_tests: bool = False,
+    overwrite_dependencies: bool = False,
+    increment_version: str | None = None,
 ):
     """Perform the build process.
 
@@ -180,6 +183,7 @@ def build(
     * Format source code with `Black`
     * Sort source code imports with `isort`
     * Update project dependencies in `pyproject.toml`
+    * Increment version in `pyproject.toml` if `increment_version` supplied
     * Generate docs
     * Delete previous `dist` folder contents
     * Invoke build module"""
@@ -192,6 +196,10 @@ def build(
     hassle_utilities.update_dependencies(
         package_dir / "pyproject.toml", overwrite_dependencies
     )
+    if increment_version:
+        hassle_utilities.increment_version(
+            package_dir / "pyproject.toml", increment_version
+        )
     # Vermin isn't taking into account the minimum version of dependencies.
     # Removing from now and defaulting to >=3.10
     # hassle_utilities.update_minimum_python_version(pyproject_path)
@@ -217,9 +225,14 @@ def main(args: argparse.Namespace = None):
         run_tests(args.package)
 
     if args.build:
-        build(args.package, args.skip_tests, args.overwrite_dependencies)
+        build(
+            args.package,
+            args.skip_tests,
+            args.overwrite_dependencies,
+            args.increment_version,
+        )
 
-    if args.increment_version:
+    if args.increment_version and not args.build:
         hassle_utilities.increment_version(pyproject_path, args.increment_version)
 
     if args.update_changelog:
