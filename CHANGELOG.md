@@ -1,12 +1,21 @@
 # Changelog
 
-## 2.8.3 (2023-05-10)
+## 2.8.4 (2023-05-12)
+
+#### Fixes
+
+* run_tests() returns True if no tests are found
+
+
+## v2.8.3 (2023-05-10)
 
 #### Fixes
 
 * fix bug where the package would get built before the version was incremented
 #### Others
 
+* build v2.8.3
+* update changelog
 * build v2.8.2
 
 
@@ -46,8 +55,8 @@
 * invoke build with sys.executable instead of py
 #### Refactorings
 
-* replace os.system call to git with gitbetter.git methods
 * replace os.system calls for black and isort with direct invocations
+* replace os.system calls for git functions with gitbetter.git methods
 * extract build process into it's own function
 * make run_tests() invoke pytest and coverage directly and return pytest result
 #### Others
