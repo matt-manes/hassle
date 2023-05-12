@@ -36,7 +36,8 @@ def run_tests(package_path: Pathier) -> bool:
     cover.stop()
     cover.report()
     startdir.mkcwd()
-    return results == 0
+    # All tests passed (0) or Pytest couldn't find any tests (5)
+    return results in [0, 5]
 
 
 def main(args: argparse.Namespace = None):
