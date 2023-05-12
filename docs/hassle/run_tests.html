@@ -98,18 +98,19 @@
 </span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="n">cover</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>    <span class="n">cover</span><span class="o">.</span><span class="n">report</span><span class="p">()</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>    <span class="n">startdir</span><span class="o">.</span><span class="n">mkcwd</span><span class="p">()</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="k">return</span> <span class="n">results</span> <span class="o">==</span> <span class="mi">0</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="c1"># All tests passed (0) or Pytest couldn&#39;t find any tests (5)</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>    <span class="k">return</span> <span class="n">results</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 </span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>        <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>    <span class="n">package_path</span> <span class="o">=</span> <span class="n">Pathier</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="n">run_tests</span><span class="p">(</span><span class="n">package_path</span><span class="p">)</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="n">package_path</span> <span class="o">=</span> <span class="n">Pathier</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="n">run_tests</span><span class="p">(</span><span class="n">package_path</span><span class="p">)</span>
 </span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>    <span class="n">main</span><span class="p">(</span><span class="n">get_args</span><span class="p">())</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>    <span class="n">main</span><span class="p">(</span><span class="n">get_args</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -171,7 +172,8 @@
 </span><span id="run_tests-37"><a href="#run_tests-37"><span class="linenos">37</span></a>    <span class="n">cover</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </span><span id="run_tests-38"><a href="#run_tests-38"><span class="linenos">38</span></a>    <span class="n">cover</span><span class="o">.</span><span class="n">report</span><span class="p">()</span>
 </span><span id="run_tests-39"><a href="#run_tests-39"><span class="linenos">39</span></a>    <span class="n">startdir</span><span class="o">.</span><span class="n">mkcwd</span><span class="p">()</span>
-</span><span id="run_tests-40"><a href="#run_tests-40"><span class="linenos">40</span></a>    <span class="k">return</span> <span class="n">results</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span id="run_tests-40"><a href="#run_tests-40"><span class="linenos">40</span></a>    <span class="c1"># All tests passed (0) or Pytest couldn&#39;t find any tests (5)</span>
+</span><span id="run_tests-41"><a href="#run_tests-41"><span class="linenos">41</span></a>    <span class="k">return</span> <span class="n">results</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -193,11 +195,11 @@
 
     </div>
     <a class="headerlink" href="#main"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="main-43"><a href="#main-43"><span class="linenos">43</span></a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span id="main-44"><a href="#main-44"><span class="linenos">44</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
-</span><span id="main-45"><a href="#main-45"><span class="linenos">45</span></a>        <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
-</span><span id="main-46"><a href="#main-46"><span class="linenos">46</span></a>    <span class="n">package_path</span> <span class="o">=</span> <span class="n">Pathier</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-</span><span id="main-47"><a href="#main-47"><span class="linenos">47</span></a>    <span class="n">run_tests</span><span class="p">(</span><span class="n">package_path</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="main-44"><a href="#main-44"><span class="linenos">44</span></a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+</span><span id="main-45"><a href="#main-45"><span class="linenos">45</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+</span><span id="main-46"><a href="#main-46"><span class="linenos">46</span></a>        <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
+</span><span id="main-47"><a href="#main-47"><span class="linenos">47</span></a>    <span class="n">package_path</span> <span class="o">=</span> <span class="n">Pathier</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+</span><span id="main-48"><a href="#main-48"><span class="linenos">48</span></a>    <span class="n">run_tests</span><span class="p">(</span><span class="n">package_path</span><span class="p">)</span>
 </span></pre></div>
 
 
