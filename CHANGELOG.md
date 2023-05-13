@@ -1,10 +1,21 @@
 # Changelog
 
-## 2.8.4 (2023-05-12)
+## 2.8.5 (2023-05-13)
+
+#### Fixes
+
+* fix sync command only pushing tags and not code
+
+
+## v2.8.4 (2023-05-12)
 
 #### Fixes
 
 * run_tests() returns True if no tests are found
+#### Others
+
+* build v2.8.4
+* update changelog
 
 
 ## v2.8.3 (2023-05-10)
