@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
-from gitbetter import git
+from gitbetter import Git
 from pathier import Pathier
 
 import hassle.hassle_config as hassle_config
@@ -256,6 +256,7 @@ def main(args: argparse.Namespace = None):
         if not args.no_license:
             create_license(targetdir)
         os.chdir(targetdir)
+        git = Git()
         git.new_repo()
 
     except Exception as e:

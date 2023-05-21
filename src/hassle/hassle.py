@@ -3,7 +3,7 @@ import os
 import sys
 
 import isort
-from gitbetter import git
+from gitbetter import Git
 from pathier import Pathier
 
 from hassle import hassle_utilities
@@ -214,6 +214,8 @@ def main(args: argparse.Namespace = None):
 
     pyproject_path = args.package / "pyproject.toml"
     args.package.mkcwd()
+
+    git = Git()
 
     if not pyproject_path.exists():
         raise FileNotFoundError(f"Could not locate pyproject.toml for {args.package}")

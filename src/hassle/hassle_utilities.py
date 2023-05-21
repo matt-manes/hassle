@@ -3,7 +3,7 @@ import os
 import black
 import packagelister
 import vermin
-from gitbetter import git
+from gitbetter import Git
 from pathier import Pathier
 
 from hassle import hassle_config
@@ -142,6 +142,7 @@ def tag_version(package_path: Pathier):
         tag_prefix = ""
     version = (package_path / "pyproject.toml").loads()["project"]["version"]
     os.chdir(package_path)
+    git = Git()
     git.tag(f"{tag_prefix}{version}")
 
 
