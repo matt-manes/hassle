@@ -130,7 +130,7 @@ def get_args() -> argparse.Namespace:
         type=str,
         default=None,
         help=""" Excpects one argument: "major", "minor", or "patch".
-        Passing "-up minor" is equivalent to passing the cli string: "-b -t -i -iv minor -uc -ca build -s".
+        Passing "-up minor" is equivalent to passing the cli string: "-b -t -iv minor -uc -ca build -s".
         To publish the updated package, the -p/--publish switch needs to be added to the cli input.""",
     )
 
@@ -248,17 +248,13 @@ def main(args: argparse.Namespace = None):
 
     if args.update_changelog:
         hassle_utilities.update_changelog(pyproject_path)
-        # If we're going to add tag for current version
-        # commit changelog first
-        input(
-            "Press enter to continue after optionally pruning the updated changelog..."
-        )
         if args.tag_version:
             git.capture_stdout = True
             tags = git.execute("tag").strip("\n")
             most_recent_tag = tags[tags.rfind("\n") + 1 :]
             git.execute(f"tag -d {most_recent_tag}")
             git.capture_stdout = False
+        input("Press enter to continue after manually adjusting the changelog...")
         git.commit_files(
             [str(args.package / "CHANGELOG.md")], "chore: update changelog"
         )
