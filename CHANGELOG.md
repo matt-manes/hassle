@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.10.2 (2023-05-21)
+
+#### Fixes
+
+* fix startswith usage
+
+#### Performance improvements
+
+* add filters for changelog generation
+
+
 ## v2.10.0 (2023-05-21)
 
 #### New Features
