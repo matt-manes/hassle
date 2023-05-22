@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.9.0 (2023-05-21)
+
+#### New Features
+
+* implement running changelog
+#### Refactorings
+
+* Running hassle with -up/--update arg doesn't set -i/--install to True
+* change order of operations
+#### Others
+
+* add missing tag prefix
+* update gitbetter usage to new package version
+
+
 ## v2.8.5 (2023-05-13)
 
 #### Fixes
@@ -12,10 +27,6 @@
 #### Fixes
 
 * run_tests() returns True if no tests are found
-#### Others
-
-* build v2.8.4
-* update changelog
 
 
 ## v2.8.3 (2023-05-10)
@@ -23,11 +34,6 @@
 #### Fixes
 
 * fix bug where the package would get built before the version was incremented
-#### Others
-
-* build v2.8.3
-* update changelog
-* build v2.8.2
 
 
 ## v2.8.2 (2023-05-10)
@@ -35,10 +41,6 @@
 #### Fixes
 
 * swap build and increment_version order so version isn't incremented if build/tests fail
-#### Others
-
-* build v2.8.2
-* update changelog
 
 
 ## v2.8.1 (2023-05-10)
@@ -48,8 +50,6 @@
 * modify pip install invocation for better multi-platform support
 #### Others
 
-* build v2.8.1
-* update changelog
 * remove unused import
 
 
@@ -72,8 +72,6 @@
 * make run_tests() invoke pytest and coverage directly and return pytest result
 #### Others
 
-* build v2.8.0
-* update changelog
 * remove unused import
 
 
@@ -88,10 +86,6 @@
 #### Docs
 
 * modify doc string formatting
-#### Others
-
-* build v2.7.1
-* update changelog
 
 
 ## v2.7.0 (2023-04-28)
@@ -99,10 +93,6 @@
 #### Refactorings
 
 * add a pause to manually prune the changelog before committing the autoupdate
-#### Others
-
-* build v2.7.0
-* update changelog
 
 
 ## v2.6.0 (2023-04-15)
@@ -112,9 +102,6 @@
 * return minimum py version as string
 * extract getting project code into separate function
 * extract vermin scan into separate function
-#### Others
-
-* build v2.6.0
 
 
 ## v2.5.0 (2023-04-15)
@@ -127,8 +114,6 @@
 * replace pathlib, os.chdir, and shutil calls with pathier
 #### Others
 
-* build v2.5.0
-* update changelog
 * prune dependencies
 
 
@@ -145,10 +130,6 @@
 #### Refactorings
 
 * generated test functions will have the form 'test_{function_name}'
-#### Others
-
-* build v2.4.0
-* update changelog
 
 
 ## v2.3.2 (2023-04-02)
@@ -156,10 +137,6 @@
 #### Refactorings
 
 * install command will always isntall local copy b/c pypi doesn't update fast enough
-#### Others
-
-* build v2.3.2
-* update changelog
 
 
 ## v2.3.1 (2023-03-31)
@@ -167,11 +144,6 @@
 #### Fixes
 
 * fix commit_all not adding untracked files in /dist
-#### Others
-
-* build v2.3.1
-* update changelog
-* build v2.3.0
 
 
 ## v2.3.0 (2023-03-31)
@@ -188,8 +160,6 @@
 * remove uneccessary git command in commit_all block
 #### Others
 
-* build v2.3.0
-* update changelog
 * update readme
 
 
@@ -199,10 +169,6 @@
 
 * make dependency versions optional
 * add alt structure for non-package projects
-#### Others
-
-* build v2.2.0
-* update changelog
 
 
 ## v2.0.2 (2023-02-20)
@@ -211,10 +177,6 @@
 
 * add 'pip install -e .' cmd
 * add missing '>=' to min py version in template
-#### Others
-
-* build v2.0.2
-* update changelog
 
 
 ## v2.0.1 (2023-02-18)
@@ -223,14 +185,3 @@
 
 * change load_template to load_config
 * fix project.urls in pyproject template
-#### Others
-
-* build v2.0.1
-* update changelog
-
-
-## v2.0.0 (2023-02-18)
-
-#### Others
-
-* build v2.0.0
