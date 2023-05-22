@@ -180,6 +180,9 @@ def create_pyproject_file(targetdir: Pathier, args: argparse.Namespace):
         )
     if args.add_script:
         pyproject["project"]["scripts"][args.name] = f"{args.name}.{args.name}:main"
+    if args.not_package:
+        for item in ["build-system", "tool", "project.scripts"]:
+            pyproject.pop(item)
     (targetdir / "pyproject.toml").dumps(pyproject)
 
 
@@ -242,8 +245,7 @@ def main(args: argparse.Namespace = None):
             print(f"{targetdir} already exists.")
             if not get_answer("Overwrite?"):
                 sys.exit(0)
-        if not args.not_package:
-            create_pyproject_file(targetdir, args)
+        create_pyproject_file(targetdir, args)
         create_source_files(
             targetdir if args.not_package else (targetdir / "src" / args.name),
             args.source_files[1:] if args.not_package else args.source_files,
