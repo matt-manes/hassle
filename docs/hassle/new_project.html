@@ -91,7 +91,7 @@
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">import</span> <span class="nn">requests</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span> <span class="nn">gitbetter</span> <span class="kn">import</span> <span class="n">git</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span> <span class="nn">gitbetter</span> <span class="kn">import</span> <span class="n">Git</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="kn">from</span> <span class="nn">pathier</span> <span class="kn">import</span> <span class="n">Pathier</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="kn">import</span> <span class="nn">hassle.hassle_config</span> <span class="k">as</span> <span class="nn">hassle_config</span>
@@ -342,17 +342,18 @@
 </span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">no_license</span><span class="p">:</span>
 </span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>            <span class="n">create_license</span><span class="p">(</span><span class="n">targetdir</span><span class="p">)</span>
 </span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">targetdir</span><span class="p">)</span>
-</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>        <span class="n">git</span><span class="o">.</span><span class="n">new_repo</span><span class="p">()</span>
-</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>
-</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;Aborting new package creation&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>        <span class="k">if</span> <span class="n">get_answer</span><span class="p">(</span><span class="s2">&quot;Delete created files?&quot;</span><span class="p">):</span>
-</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>            <span class="n">targetdir</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>
+</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>        <span class="n">git</span> <span class="o">=</span> <span class="n">Git</span><span class="p">()</span>
+</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>        <span class="n">git</span><span class="o">.</span><span class="n">new_repo</span><span class="p">()</span>
+</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>
+</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;Aborting new package creation&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>        <span class="k">if</span> <span class="n">get_answer</span><span class="p">(</span><span class="s2">&quot;Delete created files?&quot;</span><span class="p">):</span>
+</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>            <span class="n">targetdir</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>    <span class="n">main</span><span class="p">(</span><span class="n">get_args</span><span class="p">())</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>
+</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>    <span class="n">main</span><span class="p">(</span><span class="n">get_args</span><span class="p">())</span>
 </span></pre></div>
 
 
@@ -778,13 +779,14 @@ Only checks the first page of results.</p>
 </span><span id="main-257"><a href="#main-257"><span class="linenos">257</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">no_license</span><span class="p">:</span>
 </span><span id="main-258"><a href="#main-258"><span class="linenos">258</span></a>            <span class="n">create_license</span><span class="p">(</span><span class="n">targetdir</span><span class="p">)</span>
 </span><span id="main-259"><a href="#main-259"><span class="linenos">259</span></a>        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">targetdir</span><span class="p">)</span>
-</span><span id="main-260"><a href="#main-260"><span class="linenos">260</span></a>        <span class="n">git</span><span class="o">.</span><span class="n">new_repo</span><span class="p">()</span>
-</span><span id="main-261"><a href="#main-261"><span class="linenos">261</span></a>
-</span><span id="main-262"><a href="#main-262"><span class="linenos">262</span></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="main-263"><a href="#main-263"><span class="linenos">263</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;Aborting new package creation&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-</span><span id="main-264"><a href="#main-264"><span class="linenos">264</span></a>            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-</span><span id="main-265"><a href="#main-265"><span class="linenos">265</span></a>        <span class="k">if</span> <span class="n">get_answer</span><span class="p">(</span><span class="s2">&quot;Delete created files?&quot;</span><span class="p">):</span>
-</span><span id="main-266"><a href="#main-266"><span class="linenos">266</span></a>            <span class="n">targetdir</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</span><span id="main-260"><a href="#main-260"><span class="linenos">260</span></a>        <span class="n">git</span> <span class="o">=</span> <span class="n">Git</span><span class="p">()</span>
+</span><span id="main-261"><a href="#main-261"><span class="linenos">261</span></a>        <span class="n">git</span><span class="o">.</span><span class="n">new_repo</span><span class="p">()</span>
+</span><span id="main-262"><a href="#main-262"><span class="linenos">262</span></a>
+</span><span id="main-263"><a href="#main-263"><span class="linenos">263</span></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="main-264"><a href="#main-264"><span class="linenos">264</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;Aborting new package creation&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+</span><span id="main-265"><a href="#main-265"><span class="linenos">265</span></a>            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</span><span id="main-266"><a href="#main-266"><span class="linenos">266</span></a>        <span class="k">if</span> <span class="n">get_answer</span><span class="p">(</span><span class="s2">&quot;Delete created files?&quot;</span><span class="p">):</span>
+</span><span id="main-267"><a href="#main-267"><span class="linenos">267</span></a>            <span class="n">targetdir</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </span></pre></div>
 
 
