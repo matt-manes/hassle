@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 import black
 import packagelister
@@ -124,12 +125,37 @@ def update_changelog(pyproject_path: Pathier):
         print("Creating blank hassle_config.toml...")
         config = hassle_config.load_config()
     changelog_path = pyproject_path.parent / "CHANGELOG.md"
-    os.system(
-        f"auto-changelog -p {pyproject_path.parent} --tag-prefix {config['git']['tag_prefix']} --unreleased -v {meta['project']['version']} -o {changelog_path}"
-    )
-    changelog = changelog_path.read_text().splitlines()
-    changelog = [line for line in changelog if "Full set of changes:" not in line]
-    changelog_path.write_text("\n".join(changelog))
+    raw_changelog = [
+        line
+        for line in subprocess.run(
+            [
+                "auto-changelog",
+                "-p",
+                pyproject_path.parent,
+                "--tag-prefix",
+                config["git"]["tag_prefix"],
+                "--stdout",
+            ],
+            stdout=subprocess.PIPE,
+            text=True,
+        ).stdout.splitlines(True)
+        if not line.startswith("Full set of changes:")
+    ]
+    if changelog_path.exists():
+        previous_changelog = changelog_path.read_text().splitlines(True)[
+            2:
+        ]  # First two elements are "# Changelog\n" and "\n"
+        for line in previous_changelog:
+            # Release headers are prefixed with "## "
+            if line.startswith("## "):
+                new_changes = raw_changelog[: raw_changelog.index(line)]
+                break
+    else:
+        new_changes = raw_changelog
+        previous_changelog = []
+    # if new_changes == "# Changelog\n\n" then there were no new changes
+    if not "".join(new_changes) == "# Changelog\n\n":
+        changelog_path.write_text("".join(new_changes + previous_changelog))
 
 
 def tag_version(package_path: Pathier):
