@@ -148,7 +148,6 @@ def get_args() -> argparse.Namespace:
     if args.update:
         args.build = True
         args.tag_version = True
-        args.install = True
         args.increment_version = args.update
         args.update_changelog = True
         args.commit_all = "build"
