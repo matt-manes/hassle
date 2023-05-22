@@ -139,7 +139,13 @@ def update_changelog(pyproject_path: Pathier):
             stdout=subprocess.PIPE,
             text=True,
         ).stdout.splitlines(True)
-        if not line.startswith("Full set of changes:")
+        if not line.startswith(
+            [
+                "Full set of changes:",
+                f"* build {config['git']['tag_prefix']}",
+                "* update changelog",
+            ]
+        )
     ]
     if changelog_path.exists():
         previous_changelog = changelog_path.read_text().splitlines(True)[
