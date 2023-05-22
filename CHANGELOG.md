@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.10.0 (2023-05-21)
+
+#### New Features
+
+* new_project generates a modified pyproject.toml
+#### Others
+
+* update documentation
+
+
 ## v2.9.0 (2023-05-21)
 
 #### New Features
