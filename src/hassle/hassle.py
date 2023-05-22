@@ -237,18 +237,6 @@ def main(args: argparse.Namespace = None):
     if args.increment_version and not args.build:
         hassle_utilities.increment_version(pyproject_path, args.increment_version)
 
-    if args.update_changelog:
-        hassle_utilities.update_changelog(pyproject_path)
-        # If we're going to add tag for current version
-        # commit changelog first
-        if args.tag_version:
-            input(
-                "Press enter to continue after optionally pruning the updated changelog..."
-            )
-            git.commit_files(
-                [str(args.package / "CHANGELOG.md")], "chore: update changelog"
-            )
-
     if args.commit_all:
         if args.commit_all == "build":
             version = pyproject_path.loads()["project"]["version"]
@@ -258,6 +246,27 @@ def main(args: argparse.Namespace = None):
 
     if args.tag_version:
         hassle_utilities.tag_version(args.package)
+
+    if args.update_changelog:
+        hassle_utilities.update_changelog(pyproject_path)
+        # If we're going to add tag for current version
+        # commit changelog first
+        input(
+            "Press enter to continue after optionally pruning the updated changelog..."
+        )
+        if args.tag_version:
+            git.capture_stdout = True
+            tags = git.execute("tag").strip("\n")
+            most_recent_tag = tags[tags.rfind("\n") + 1 :]
+            git.execute(f"tag -d {most_recent_tag}")
+            git.capture_stdout = False
+        git.commit_files(
+            [str(args.package / "CHANGELOG.md")], "chore: update changelog"
+        )
+        if args.tag_version:
+            git.capture_stdout = True
+            git.tag(most_recent_tag)
+            git.capture_stdout = False
 
     if args.publish:
         os.system(f"twine upload {args.package / 'dist' / '*'}")
