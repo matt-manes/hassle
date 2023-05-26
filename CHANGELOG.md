@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.10.3 (2023-05-26)
+
+#### Fixes
+
+* fix bug with determining the most recent tag
 ## v2.10.2 (2023-05-21)
 
 #### Fixes
