@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "hassle"
 authors = [{name="Matt Manes", email="mattmanes@pm.me"}]
 description = "Create, build, test, and publish Python projects and packages."
-version = "2.10.2"
+version = "2.10.3"
 requires-python = ">=3.10"
 dependencies = [
     "black", 
