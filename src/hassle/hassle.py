@@ -103,10 +103,8 @@ def get_args() -> argparse.Namespace:
         "--commit_all",
         type=str,
         default=None,
-        help=""" Git stage and commit all tracked files
-        with this supplied commit message.
-        If 'build' is passed, all commits will have
-        message: 'chore: build v{current_version}""",
+        help=""" Git stage and commit all tracked files with this supplied commit message.
+        If 'build' is passed, all commits will have message: 'chore: build v{current_version}""",
     )
 
     parser.add_argument(
@@ -164,6 +162,15 @@ def get_args() -> argparse.Namespace:
 
     if args.commit_all == "":
         raise ValueError("Commit message for args.commit_all cannot be empty.")
+
+    if args.publish and not hassle_utilities.on_primary_branch():
+        print(
+            "WARNING: You are trying to publish a project that does not appear to be on its main branch."
+        )
+        choice = input("Continue? (y/n) ")
+        if choice != "y":
+            print("Quitting hassle.")
+            sys.exit()
 
     return args
 
