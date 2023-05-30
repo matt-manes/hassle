@@ -184,3 +184,16 @@ def format_files(path: Pathier):
         black.main([str(path)])
     except SystemExit:
         ...
+
+
+def on_primary_branch() -> bool:
+    """Returns `False` if repo is not currently on `main` or `master` branch."""
+    git = Git(True)
+    branches = git.execute("branch").splitlines()
+    for branch in branches:
+        if branch.startswith("*"):
+            current_branch = branch[2:]
+            break
+    if current_branch.lower() not in ["main", "master"]:
+        return False
+    return True
