@@ -130,8 +130,9 @@ def get_args() -> argparse.Namespace:
         default=None,
         choices=["major", "minor", "patch"],
         help=""" Excpects one argument: "major", "minor", or "patch".
-        Passing "-up minor" is equivalent to passing the cli string: "-b -t -iv minor -uc -ca build -s".
-        To publish the updated package, the -p/--publish switch needs to be added to the cli input.""",
+        Passing "-up minor" is equivalent to passing "--build --tag_version --increment_version minor --update_changelog --commit_all build --sync".
+        To publish the updated package, the -p/--publish switch needs to be added to the cli input.
+        To install the updated package, the -i/--install switch also needs to be added.""",
     )
 
     parser.add_argument(
