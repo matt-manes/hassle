@@ -281,7 +281,7 @@ def main(args: argparse.Namespace = None):
 
     if args.sync:
         git.pull("--tags")
-        git.push("--tags")
+        git.push("origin main --tags")
 
 
 if __name__ == "__main__":
