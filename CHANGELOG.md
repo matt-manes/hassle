@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.11.0 (2023-05-30)
+
+#### New Features
+
+* prompt user for confirmation when trying to publish a project that isn't on its main branch
+* add on_primary_branch()
+#### Performance improvements
+
+* add choices param to -iv/--increment_version and -up/--update cli switches
+#### Refactorings
+
+* use gitbetter.Git context manager to capture output
+* change git.pull and git.push args to just '--tags' in sync command
+#### Docs
+
+* update cli help message
+
+
 ## v2.10.3 (2023-05-26)
 
 #### Fixes
