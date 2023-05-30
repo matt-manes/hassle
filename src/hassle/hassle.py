@@ -50,6 +50,7 @@ def get_args() -> argparse.Namespace:
         "--increment_version",
         type=str,
         default=None,
+        choices=["major", "minor", "patch"],
         help=""" Increment version in pyproject.toml.
         Can be one of "major", "minor", or "patch". """,
     )
@@ -127,6 +128,7 @@ def get_args() -> argparse.Namespace:
         "--update",
         type=str,
         default=None,
+        choices=["major", "minor", "patch"],
         help=""" Excpects one argument: "major", "minor", or "patch".
         Passing "-up minor" is equivalent to passing the cli string: "-b -t -iv minor -uc -ca build -s".
         To publish the updated package, the -p/--publish switch needs to be added to the cli input.""",
