@@ -259,9 +259,8 @@ def main(args: argparse.Namespace = None):
             [str(args.package / "CHANGELOG.md")], "chore: update changelog"
         )
         if args.tag_version:
-            git.capture_stdout = True
-            git.tag(most_recent_tag)
-            git.capture_stdout = False
+            with git.capture_output():
+                git.tag(most_recent_tag)
 
     if args.publish:
         os.system(f"twine upload {args.package / 'dist' / '*'}")
