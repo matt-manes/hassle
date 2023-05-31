@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.11.1 (2023-05-30)
+
+#### Fixes
+
+* fix sync command not properly pushing
+#### Performance improvements
+
+* replace 'main' with current branch in pull and push commands when syncing
+#### Refactorings
+
+* use gitbetter.Git.current_branch in on_primary_branch()
+#### Others
+
+
+
 ## v2.11.0 (2023-05-30)
 
 #### New Features
