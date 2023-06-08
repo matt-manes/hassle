@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.12.0 (2023-06-07)
+
+#### New Features
+
+* add functionality to check if latest version of project has been published to pypi.org
+#### Docs
+
+* update readme
+
 ## v2.11.1 (2023-05-30)
 
 #### Fixes
