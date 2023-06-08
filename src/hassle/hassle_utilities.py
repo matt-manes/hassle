@@ -1,11 +1,11 @@
 import os
 import subprocess
-import requests
-from bs4 import BeautifulSoup
 
 import black
 import packagelister
+import requests
 import vermin
+from bs4 import BeautifulSoup
 from gitbetter import Git
 from pathier import Pathier
 
