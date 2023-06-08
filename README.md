@@ -506,7 +506,7 @@ For reference, here is the full `-h/--help` output for hassle:
 
 <pre>
 >hassle -h
-usage: hassle [-h] [-b] [-t] [-i] [-iv INCREMENT_VERSION] [-p] [-rt] [-gt] [-uc] [-od] [-ca COMMIT_ALL] [-s] [-dv] [-up UPDATE] [package]
+usage: hassle [-h] [-b] [-t] [-i] [-iv {major,minor,patch}] [-p] [-rt] [-gt] [-uc] [-od] [-ca COMMIT_ALL] [-s] [-dv] [-up {major,minor,patch}] [-st] [-ip] [package]
 
 positional arguments:
   package               The name of the package or project to use, assuming it's a subfolder of your current working directory. Can also be a full path to the package. If nothing is given, the current working directory will be used.
@@ -516,7 +516,7 @@ options:
   -b, --build           Build the package.
   -t, --tag_version     Add a git tag corresponding to the version in pyproject.toml.
   -i, --install         Install the package from source.
-  -iv INCREMENT_VERSION, --increment_version INCREMENT_VERSION
+  -iv {major,minor,patch}, --increment_version {major,minor,patch}
                         Increment version in pyproject.toml. Can be one of "major", "minor", or "patch".
   -p, --publish         Publish package to PyPi. Note: You must have configured twine and registered a PyPi account/generated an API key to use this option.
   -rt, --run_tests      Run tests for the package.
@@ -532,6 +532,9 @@ options:
   -s, --sync            Pull from github, then push current commit to repo.
   -dv, --dependency_versions
                         Include version specifiers for dependencies in pyproject.toml.
-  -up UPDATE, --update UPDATE
-                        Excpects one argument: "major", "minor", or "patch". Passing "-up minor" is equivalent to passing the cli string: "-b -t -i -iv minor -uc -ca build -s". To publish the updated package, the -p/--publish switch needs to be added to the cli input.
+  -up {major,minor,patch}, --update {major,minor,patch}
+                        Expects one argument: "major", "minor", or "patch". Passing "-up minor" is equivalent to passing "--build --tag_version --increment_version minor --update_changelog --commit_all build --sync". To publish the updated package, the -p/--publish switch needs
+                        to be added to the cli input. To install the updated package, the -i/--install switch also needs to be added.
+  -st, --skip_tests     Don't run tests when using the -b/--build command.
+  -ip, --is_published   Check that the version number in `pyproject.toml` and `pypi.org/project/{project_name}` agree.
 </pre>
