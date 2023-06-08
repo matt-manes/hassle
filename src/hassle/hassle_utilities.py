@@ -1,5 +1,7 @@
 import os
 import subprocess
+import requests
+from bs4 import BeautifulSoup
 
 import black
 import packagelister
@@ -117,7 +119,6 @@ def update_dependencies(
 
 def update_changelog(pyproject_path: Pathier):
     """Update project changelog."""
-    meta = pyproject_path.loads()
     if hassle_config.config_exists():
         config = hassle_config.load_config()
     else:
@@ -165,8 +166,7 @@ def update_changelog(pyproject_path: Pathier):
 
 
 def tag_version(package_path: Pathier):
-    """Add a git tag corresponding
-    to the version number in pyproject.toml."""
+    """Add a git tag corresponding to the version number in pyproject.toml."""
     if hassle_config.config_exists():
         tag_prefix = hassle_config.load_config()["git"]["tag_prefix"]
     else:
@@ -192,3 +192,18 @@ def on_primary_branch() -> bool:
     if git.current_branch not in ["main", "master"]:
         return False
     return True
+
+
+def latest_version_is_published(pyproject_path: Pathier) -> bool:
+    """Return `True` if the version number in `pyproject.toml` and the project page on `pypi.org` agree."""
+    data = pyproject_path.loads()
+    name = data["project"]["name"]
+    version = data["project"]["version"]
+    pypi_url = f"https://pypi.org/project/{name}"
+    response = requests.get(pypi_url)
+    if response.status_code != 200:
+        raise RuntimeError(f"{pypi_url} returned status code {response.status_code} :/")
+    soup = BeautifulSoup(response.text, "html.parser")
+    header = soup.find("h1", class_="package-header__name").text.strip()
+    pypi_version = header[header.rfind(" ") + 1 :]
+    return version == pypi_version

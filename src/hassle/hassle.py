@@ -129,7 +129,7 @@ def get_args() -> argparse.Namespace:
         type=str,
         default=None,
         choices=["major", "minor", "patch"],
-        help=""" Excpects one argument: "major", "minor", or "patch".
+        help=""" Expects one argument: "major", "minor", or "patch".
         Passing "-up minor" is equivalent to passing "--build --tag_version --increment_version minor --update_changelog --commit_all build --sync".
         To publish the updated package, the -p/--publish switch needs to be added to the cli input.
         To install the updated package, the -i/--install switch also needs to be added.""",
@@ -140,6 +140,13 @@ def get_args() -> argparse.Namespace:
         "--skip_tests",
         action="store_true",
         help=""" Don't run tests when using the -b/--build command. """,
+    )
+
+    parser.add_argument(
+        "-ip",
+        "--is_published",
+        action="store_true",
+        help=""" Check that the version number in `pyproject.toml` and `pypi.org/project/{project_name}` agree. """,
     )
 
     args = parser.parse_args()
@@ -282,6 +289,15 @@ def main(args: argparse.Namespace = None):
     if args.sync:
         git.pull(f"origin {git.current_branch} --tags")
         git.push(f"origin {git.current_branch} --tags")
+
+    if args.is_published:
+        is_published = hassle_utilities.latest_version_is_published(
+            args.package / "pyproject.toml"
+        )
+        if is_published:
+            print("The most recent version of this package has been published.")
+        else:
+            print("The most recent version of this package has not been published.")
 
 
 if __name__ == "__main__":
