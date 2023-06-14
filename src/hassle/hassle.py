@@ -257,7 +257,7 @@ def main(args: argparse.Namespace = None):
         if args.commit_all == "build":
             version = pyproject_path.loads()["project"]["version"]
             args.commit_all = f"chore: build v{version}"
-        git.add()
+        git.add_all()
         git.commit(f'-m "{args.commit_all}"')
 
     if args.tag_version:
@@ -269,7 +269,7 @@ def main(args: argparse.Namespace = None):
             with git.capture_output():
                 tags = git.tag("--sort=-committerdate")
                 most_recent_tag = tags[: tags.find("\n")]
-                git.execute(f"tag -d {most_recent_tag}")
+                git.tag(f"-d {most_recent_tag}")
         input("Press enter to continue after manually adjusting the changelog...")
         git.commit_files(
             [str(args.package / "CHANGELOG.md")], "chore: update changelog"
