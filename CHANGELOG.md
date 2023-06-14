@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.12.1 (2023-06-13)
+
+#### Others
+
+* update gitbetter usage
+
+
 ## v2.12.0 (2023-06-07)
 
 #### New Features
