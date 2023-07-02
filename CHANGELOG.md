@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.12.2 (2023-07-01)
+
+#### Performance improvements
+
+* add \*scratch* to gitignore template
+
 ## v2.12.1 (2023-06-13)
 
 #### Others
@@ -27,9 +33,6 @@
 #### Refactorings
 
 * use gitbetter.Git.current_branch in on_primary_branch()
-#### Others
-
-
 
 ## v2.11.0 (2023-05-30)
 
