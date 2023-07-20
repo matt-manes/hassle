@@ -182,7 +182,8 @@ def create_pyproject_file(targetdir: Pathier, args: argparse.Namespace):
         pyproject["project"]["scripts"][args.name] = f"{args.name}.{args.name}:main"
     if args.not_package:
         for item in ["build-system", "tool", "project.scripts"]:
-            pyproject.pop(item)
+            if item in pyproject:
+                pyproject.pop(item)
     (targetdir / "pyproject.toml").dumps(pyproject)
 
 
