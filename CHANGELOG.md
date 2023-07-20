@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.12.3 (2023-07-20)
+
+#### Fixes
+
+* prevent crashing when popping a key that doesn't exist
+
 ## v2.12.2 (2023-07-01)
 
 #### Performance improvements
