@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.12.4 (2023-08-19)
+
+#### Refactorings
+
+* update gitbetter usage
+
 ## v2.12.3 (2023-07-20)
 
 #### Fixes
