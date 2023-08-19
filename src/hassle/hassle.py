@@ -266,8 +266,8 @@ def main(args: argparse.Namespace = None):
     if args.update_changelog:
         hassle_utilities.update_changelog(pyproject_path)
         if args.tag_version:
-            with git.capture_output():
-                tags = git.tag("--sort=-committerdate")
+            with git.capturing_output():
+                tags = git.tag("--sort=-committerdate").stdout
                 most_recent_tag = tags[: tags.find("\n")]
                 git.tag(f"-d {most_recent_tag}")
         input("Press enter to continue after manually adjusting the changelog...")
@@ -275,7 +275,7 @@ def main(args: argparse.Namespace = None):
             [str(args.package / "CHANGELOG.md")], "chore: update changelog"
         )
         if args.tag_version:
-            with git.capture_output():
+            with git.capturing_output():
                 git.tag(most_recent_tag)
 
     if args.publish:
