@@ -252,7 +252,6 @@ def main(args: argparse.Namespace = None):
 
     if args.increment_version and not args.build:
         hassle_utilities.increment_version(pyproject_path, args.increment_version)
-        hassle_utilities.update_init_version(pyproject_path)
 
     if args.commit_all:
         if args.commit_all == "build":

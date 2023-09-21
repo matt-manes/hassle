@@ -48,6 +48,7 @@ def increment_version(pyproject_path: Pathier, increment_type: str):
     incremented_version = ".".join(str(num) for num in [major, minor, patch])
     meta["project"]["version"] = incremented_version
     pyproject_path.dumps(meta)
+    update_init_version(pyproject_path)
 
 
 def get_minimum_py_version(src: str) -> str:
