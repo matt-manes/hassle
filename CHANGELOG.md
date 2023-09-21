@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.13.0 (2023-09-21)
+
+#### New Features
+
+* add and update `__version__` in project's top level `__init__.py` file when using the `increment_version` arg
+#### Others
+
+* add `__version__` to init
+
+
 ## v2.12.4 (2023-08-19)
 
 #### Refactorings
