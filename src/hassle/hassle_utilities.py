@@ -1,5 +1,6 @@
 import os
 import subprocess
+import re
 
 import black
 import packagelister
@@ -14,8 +15,21 @@ from hassle import hassle_config
 root = Pathier(__file__).parent
 
 
+def update_init_version(pyproject_path: Pathier):
+    project = pyproject_path.loads()["project"]
+    version = project["version"]
+    name = project["name"]
+    init_path: Pathier = pyproject_path.parent / "src" / name / "__init__.py"
+    content = init_path.read_text()
+    if "__version__" in content:
+        content = re.sub(r"__version__.+", f'__version__ = "{version}"', content)
+    else:
+        content = content.strip("\n") + f'__version__ = "{version}"\n'
+    init_path.write_text(content)
+
+
 def increment_version(pyproject_path: Pathier, increment_type: str):
-    """Increment the project.version field in pyproject.toml.
+    """Increment the project.version field in pyproject.toml and `__version__` in `__init__.py`.
 
     :param package_path: Path to the package/project directory.
 
