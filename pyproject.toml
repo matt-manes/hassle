@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "hassle"
 description = "Create, build, test, and publish Python projects and packages."
-version = "2.13.0"
+version = "2.13.1"
 requires-python = ">=3.10"
 dependencies = ["black", "isort", "pytest~=7.2.1", "coverage", "packagelister", "vermin==1.5.1", "pdoc", "twine", "auto-changelog", "bs4", "requests", "build", "pathier", "gitbetter"]
 readme = "README.md"
