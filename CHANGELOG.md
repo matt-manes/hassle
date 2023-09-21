@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.13.1 (2023-09-21)
+
+#### Fixes
+
+* change where `update_init_version` gets called to prevent init and pyproject from getting out of sync under certain conditions
+
 ## v2.13.0 (2023-09-21)
 
 #### New Features
