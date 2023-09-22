@@ -1,5 +1,4 @@
 import os
-import re
 import subprocess
 
 import black
@@ -22,7 +21,12 @@ def update_init_version(pyproject_path: Pathier):
     init_path: Pathier = pyproject_path.parent / "src" / name / "__init__.py"
     content = init_path.read_text()
     if "__version__" in content:
-        content = re.sub(r"__version__.+", f'__version__ = "{version}"', content)
+        lines = content.splitlines()
+        for i, line in enumerate(lines):
+            if "__version__" in line:
+                lines[i] = f'__version__ = "{version}"'
+                break
+        content = "\n".join(lines)
     else:
         content = content.strip("\n") + f'__version__ = "{version}"\n'
     init_path.write_text(content)
