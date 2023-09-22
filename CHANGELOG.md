@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.13.2 (2023-09-22)
+
+#### Fixes
+
+* replace method of __init__ version updating
+
 ## v2.13.1 (2023-09-21)
 
 #### Fixes
