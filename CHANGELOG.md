@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.13.3 (2023-11-02)
+
+#### Performance improvements
+
+* add __version__ string to init during new project creation
+
+
 ## v2.13.2 (2023-09-22)
 
 #### Fixes
