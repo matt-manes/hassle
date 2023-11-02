@@ -192,6 +192,9 @@ def create_source_files(srcdir: Pathier, filelist: list[str]):
     srcdir.mkdir(parents=True, exist_ok=True)
     for file in filelist:
         (srcdir / file).touch()
+    init = srcdir / "__init__.py"
+    if init.exists():
+        init.append('__version__ = "0.0.0"')
 
 
 def create_readme(targetdir: Pathier, args: argparse.Namespace):
