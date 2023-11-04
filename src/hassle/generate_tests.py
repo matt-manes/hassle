@@ -86,7 +86,7 @@ def write_placeholders(
     if test_file.exists():
         content = test_file.read_text() + "\n\n"
     else:
-        content = f"import pytest\nfrom {package_name} import {pyfile.stem}\n\n\n"
+        content = f"from {package_name} import {pyfile.stem}\n\n\n"
     for function in functions:
         test_function = f"def test_{function}"
         if test_function not in content and function != "__init__":
