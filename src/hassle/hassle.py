@@ -271,9 +271,11 @@ def main(args: argparse.Namespace = None):
                 most_recent_tag = tags[: tags.find("\n")]
                 git.tag(f"-d {most_recent_tag}")
         input("Press enter to continue after manually adjusting the changelog...")
-        git.commit_files(
-            [str(args.package / "CHANGELOG.md")], "chore: update changelog"
-        )
+        with git.capturing_output():
+            status = git.status().stdout
+            if -1 < status.find("Untracked files") < status.find("CHANGELOG.md"):
+                git.add_files([(args.package / "CHANGELOG.md")])
+        git.commit_files([args.package / "CHANGELOG.md"], "chore: update changelog")
         if args.tag_version:
             with git.capturing_output():
                 git.tag(most_recent_tag)
