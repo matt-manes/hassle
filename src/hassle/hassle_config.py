@@ -1,166 +1,108 @@
-import argparse
+from dataclasses import asdict, dataclass, field
 
-from pathier import Pathier
+import dacite
+from pathier import Pathier, Pathish
+from typing_extensions import Self
 
 root = Pathier(__file__).parent
 
 
-def get_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "-n",
-        "--name",
-        type=str,
-        default=None,
-        help=""" Your name. This will be used to populate the 'authors' field of a packages 'pyproject.toml'. """,
-    )
-
-    parser.add_argument(
-        "-e",
-        "--email",
-        type=str,
-        default=None,
-        help=""" Your email. This will be used to populate the 'authors' field of a packages 'pyproject.toml'. """,
-    )
-
-    parser.add_argument(
-        "-g",
-        "--github_username",
-        type=str,
-        default=None,
-        help=""" Your github account name. When creating a new package,
-        say with the name 'mypackage', the pyproject.toml 'Homepage' field
-        will be set to 'https://github.com/{github_username}/mypackage'
-        and the 'Source code' field will be set to
-        'https://github.com/{github_username}/mypackage/tree/main/src/mypackage'.""",
-    )
-
-    parser.add_argument(
-        "-d",
-        "--docs_url",
-        type=str,
-        default=None,
-        help=""" The template url to be used in your pyproject.toml file
-        indicating where your project docs will be hosted.
-        Pass the url such that the spot the actual package name will go is
-        held by '$name', e.g. 'https://somedocswebsite/user/projects/$name'.
-        If 'hassle_config.toml' didn't exist prior to running this tool and nothing
-        is given for this arg, it will default to using the package's github
-        url. e.g. for package 'mypackage' the url will be 
-        'https://github.com/{your_github_name}/mypackage/tree/main/docs' """,
-    )
-
-    parser.add_argument(
-        "-t",
-        "--tag_prefix",
-        type=str,
-        default=None,
-        help=""" The tag prefix to use with git when tagging source code versions.
-        e.g. hassle will use the current version in your pyproject.toml file to when 
-        adding a git tag. If you've passed 'v' to this arg and the version of your
-        hypothetical package is '1.0.1', it will be tagged as 'v1.0.1'.
-        If 'hassle_config.toml' didn't exist prior to running this tool and you
-        don't pass anything for this arg, it will default to ''.""",
-    )
-
-    args = parser.parse_args()
-
-    return args
+@dataclass
+class Author:
+    name: str = ""
+    email: str = ""
 
 
-def config_exists() -> bool:
-    """Check if hassle_config.toml exists."""
-    return (root / "hassle_config.toml").exists()
+@dataclass
+class ProjectUrls:
+    Homepage: str = ""
+    Documentation: str = ""
+    Source_code: str = ""
 
 
-def load_config() -> dict:
-    "Load and return hassle_config contents if it exists."
-    if config_exists():
-        return (root / "hassle_config.toml").loads()
-    else:
-        raise FileNotFoundError(
-            f"load_config() could not find {root/'hassle_config.toml'}.\nRun hassle_config to set it."
-        )
+@dataclass
+class Git:
+    tag_prefix: str = ""
 
 
-def write_config(config: dict):
-    """Dump config to "hassle_config.toml."""
-    (root / "hassle_config.toml").dumps(config)
+@dataclass
+class HassleConfig:
+    authors: list[Author] = field(default_factory=list)
+    project_urls: ProjectUrls = field(default_factory=ProjectUrls)
+    git: Git = field(default_factory=Git)
+
+    @staticmethod
+    def _correct_source_code_key(data: dict) -> dict:
+        swaps = None
+        keys = data["project_urls"].keys()
+        if "Source code" in keys:
+            swaps = ("Source_code", "Source code")
+        elif "Source_code" in keys:
+            swaps = ("Source code", "Source_code")
+        if swaps:
+            data["project_urls"][swaps[0]] = data["project_urls"].pop(swaps[1])
+        return data
+
+    @classmethod
+    def load(
+        cls, path: Pathish = Pathier(__file__).parent / "hassle_config.toml"
+    ) -> Self | None:
+        """Return a `datamodel` object populated from `path`."""
+        path = Pathier(path)
+        if not path.exists():
+            print(
+                f"Could not find hassle config at {path}.\nRun hassle_config in a terminal to set it."
+            )
+            return None
+        data = path.loads()
+        data = cls._correct_source_code_key(data)
+        return dacite.from_dict(cls, data)
+
+    def dump(self, path: Pathish = Pathier(__file__).parent / "hassle_config.toml"):
+        """Write the contents of this `datamodel` object to `path`."""
+        data = asdict(self)
+        data = self._correct_source_code_key(data)
+        Pathier(path).dumps(data)
+
+    @staticmethod
+    def warn():
+        print("hassle_config.toml has not been set.")
+        print("Run hassle_config to set it.")
+        print("Run 'hassle_config -h' for help.")
+
+    @staticmethod
+    def exists(path: Pathish = Pathier(__file__).parent / "hassle_config.toml") -> bool:
+        return Pathier(path).exists()
 
 
-def warn():
-    print("hassle_config.toml has not been set.")
-    print("Run hassle_config to set it.")
-    print("Run 'hassle_config -h' for help.")
-
-
-def create_config(
-    name: str = None,
-    email: str = None,
-    github_username: str = None,
-    docs_url: str = None,
-    tag_prefix: str = None,
+def edit_config(
+    name: str | None = None,
+    email: str | None = None,
+    github_username: str | None = None,
+    docs_url: str | None = None,
+    tag_prefix: str | None = None,
 ):
-    """Create hassle_config.toml from given args."""
-    print(f"Manual edits can be made at {root/'hassle_config.toml'}")
-    if not config_exists():
-        config = {}
-        if name and email:
-            config["authors"] = [{"name": name, "email": email}]
-        elif name:
-            config["authors"] = [{"name": name}]
-        elif email:
-            config["authors"] = [{"email": email}]
-        else:
-            # In case anything upstream would fail if nothing is present for 'authors'
-            config["authors"] = [{"name": "", "email": ""}]
-        config["project_urls"] = {
-            "Homepage": "",
-            "Documentation": "",
-            "Source code": "",
-        }
-        config["git"] = {}
+    """Create or edit `hassle_config.toml` from given params."""
+    print(f"Manual edits can be made at {root / 'hassle_config.toml'}")
+    if not HassleConfig.exists():
+        config = HassleConfig()
     else:
-        config = load_config()
-        if name and email:
-            config["authors"].append({"name": name, "email": email})
-        elif name:
-            config["authors"].append({"name": name})
-        elif email:
-            config["authors"].append({"email": email})
-
+        config = HassleConfig.load()
+    assert config
+    # Add an author to config if a name or email is given.
+    if name or email:
+        config.authors.append(Author(name or "", email or ""))
     if github_username:
-        config["project_urls"][
-            "Homepage"
-        ] = f"https://github.com/{github_username}/$name"
-        config["project_urls"][
-            "Source code"
-        ] = f"{config['project_urls']['Homepage']}/tree/main/src/$name"
-
-    if docs_url:
-        config["project_urls"]["Documentation"] = docs_url
-    elif github_username and config["project_urls"]["Documentation"] == "":
-        config["project_urls"][
-            "Documentation"
-        ] = f"https://github.com/{github_username}/$name/tree/main/docs"
-
+        homepage = f"https://github.com/{github_username}/$name"
+        config.project_urls.Homepage = homepage
+        config.project_urls.Source_code = f"{homepage}/tree/main/src/$name"
+    if not config.project_urls.Documentation:
+        if github_username and not docs_url:
+            config.project_urls.Documentation = (
+                f"https://github.com/{github_username}/$name/tree/main/docs"
+            )
+        elif docs_url:
+            config.project_urls.Documentation = docs_url
     if tag_prefix:
-        config["git"]["tag_prefix"] = tag_prefix
-    elif not config_exists() and not tag_prefix:
-        config["git"]["tag_prefix"] = ""
-
-    if config:
-        write_config(config)
-
-
-def main(args: argparse.Namespace = None):
-    if not args:
-        args = get_args()
-    create_config(
-        args.name, args.email, args.github_username, args.docs_url, args.tag_prefix
-    )
-
-
-if __name__ == "__main__":
-    main(get_args())
+        config.git.tag_prefix = tag_prefix
+    config.dump()
