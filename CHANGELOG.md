@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.13.4 (2023-11-04)
+
+#### Fixes
+
+* add changelog file before committing if it's untracked
+#### Refactorings
+
+* add '<3.12' to default requires-python field
+* don't import pytest by default
+#### Others
+
+* add additional ignores
+
+
 ## v2.13.3 (2023-11-02)
 
 #### Performance improvements
