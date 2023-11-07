@@ -198,7 +198,7 @@ def get_update_parser() -> argshell.ArgShellParser:
         "-i",
         "--install",
         action="store_true",
-        help=""" Install updated package with `pip install --no-deps --upgrade --no-cache-dir`. """,
+        help=""" Install updated package. """,
     )
     return parser
 

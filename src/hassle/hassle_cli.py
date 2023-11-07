@@ -37,8 +37,8 @@ class HassleShell(argshell.ArgShell):
         )
         self.project.generate_docs()
         self.project.distdir.delete()
-        subprocess.run([sys.executable, "-m", "build", Pathier.cwd()])
         self.project.save()
+        subprocess.run([sys.executable, "-m", "build", Pathier.cwd()])
 
     @argshell.with_parser(parsers.get_add_script_parser)
     def do_add_script(self, args: argshell.Namespace):
@@ -74,13 +74,8 @@ class HassleShell(argshell.ArgShell):
         self.project.format_source_files()
 
     def do_install(self, _: str = ""):
-        """Install this package.
-
-        Equivalent to running pip install with args `--no-deps --upgrade --no-cache-dir`.
-        """
-        pip.main(
-            ["install", self.project.name, "--no-deps", "--upgrade", "--no-cache-dir"]
-        )
+        """Install this package."""
+        pip.main(["install", "."])
 
     def do_is_published(self, _: str = ""):
         """Check if the most recent version of this package is published to PYPI."""
@@ -159,6 +154,7 @@ class HassleShell(argshell.ArgShell):
     def do_update(self, args: argshell.Namespace):
         """Update this package."""
         self.project.bump_version(args.update_type)
+        self.project.save()
         self._build(args)
         git = Git()
         if HassleConfig.exists():
