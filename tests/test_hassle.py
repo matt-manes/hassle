@@ -1,140 +1,87 @@
 import pytest
 from pathier import Pathier
 
-from hassle import generate_tests, hassle_utilities, new_project
+from hassle.models import HassleConfig, Pyproject, HassleProject
+from hassle import utilities
 
 root = Pathier(__file__).parent
-dummy_functions = ["one", "two", "three", "check_check", "is_this_thing_on"]
-more_dummy_functions = ["four", "five", "six"]
 
 
-def test__generatetests__get_function_names():
-    functions = generate_tests.get_function_names(
-        root / "dummy" / "src" / "dummy" / "dummy.py"
+@pytest.fixture(scope="module")
+def userdir(tmp_path_factory) -> Pathier:
+    userdir = Pathier(tmp_path_factory.mktemp("user"))
+    userdir.mkcwd()
+    return userdir
+
+
+@pytest.fixture(scope="module")
+def dummy_projectdir(userdir: Pathier) -> Pathier:
+    dir_ = userdir / "dummy"
+    dir_.mkdir()
+    return dir_
+
+
+@pytest.fixture(scope="module")
+def config_path(userdir: Pathier) -> Pathier:
+    return userdir / "hassle_config.toml"
+
+
+def test__config_set_config(config_path: Pathier):
+    assert not HassleConfig.exists(config_path)
+    HassleConfig.configure(
+        "yeehaw", "yeehaw@yeet.com", "big_boi", None, "UwU", config_path
     )
-    for function in dummy_functions:
-        assert function in functions
-    assert len(dummy_functions) == len(functions)
-    assert dummy_functions == functions
+    assert HassleConfig.exists(config_path)
 
 
-def test__generatetests__write_placeholders():
-    startdir = Pathier.cwd()
-    (startdir / "tests" / "dummy").mkcwd()
-    generate_tests.write_placeholders(
-        Pathier(startdir / "tests" / "dummy"), "dummy.py", dummy_functions
-    )
-    test_dummy_path = startdir / "tests" / "dummy" / "tests" / "test_dummy.py"
-    assert test_dummy_path.exists()
-    content = test_dummy_path.read_text()
-    for function in dummy_functions:
-        assert f"def test_{function}():\n    ..." in content
-    test_dummy_path.parent.delete()
-    startdir.mkcwd()
+def test__config(config_path: Pathier):
+    config_ = HassleConfig.load(config_path)
+    assert config_.authors
+    assert config_.authors[0].name == "yeehaw"
+    assert config_.authors[0].email == "yeehaw@yeet.com"
+    assert config_.project_urls.Homepage == "https://github.com/big_boi/$name"
+    assert config_.git.tag_prefix == "UwU"
 
 
-def test__generatetests__generate_test_files():
-    package_path = Pathier.cwd() / "tests" / "dummy"
-    generate_tests.generate_test_files(package_path)
-    test_dummy_path = package_path / "tests" / "test_dummy.py"
-    content = test_dummy_path.read_text()
-    for function in dummy_functions:
-        assert f"def test_{function}():\n    ..." in content
-
-    test_more_dummy_path = package_path / "tests" / "test_more_dummy.py"
-    content = test_more_dummy_path.read_text()
-    for function in more_dummy_functions:
-        assert f"def test_{function}():\n    ..." in content
-
-    test_dummy_path.parent.delete()
+def test__pyproject():
+    pyproject = Pyproject.from_template()
+    assert pyproject
 
 
-def test__generatetests__main():
-    class MockArgs:
-        def __init__(self, package_name, tests_dir=None):
-            self.paths = [package_name]
-            self.tests_dir = tests_dir
-
-    for arg in ["dummy", "."]:
-        if arg == "dummy":
-            root.mkcwd()
-        if arg == ".":
-            (root / "dummy").mkcwd()
-        args = MockArgs(arg)
-
-        generate_tests.main(args)
-        test_dummy_path = root / "dummy" / "tests" / "test_dummy.py"
-        content = test_dummy_path.read_text()
-        for function in dummy_functions:
-            assert f"def test_{function}():\n    ..." in content
-
-        test_more_dummy_path = root / "dummy" / "tests" / "test_more_dummy.py"
-        content = test_more_dummy_path.read_text()
-        for function in more_dummy_functions:
-            assert f"def test_{function}():\n    ..." in content
-
-    test_dummy_path.parent.delete()
-    # ================================single file================================
-    (root / "dummy").mkcwd()
-    args = MockArgs("src/dummy/dummy.py", "secondary_tests_dir")
-    generate_tests.main(args)
-    test_dummy_path = root / "dummy" / "secondary_tests_dir" / "test_dummy.py"
-    content = test_dummy_path.read_text()
-    for function in dummy_functions:
-        assert f"def test_{function}():\n    ..." in content
-    test_dummy_path.parent.delete()
+def test__hassleproject(dummy_projectdir: Pathier, config_path: Pathier):
+    name = dummy_projectdir.stem
+    pyproject = Pyproject.from_template()
+    config = HassleConfig.load(config_path)
+    pyproject.project.name = name
+    pyproject.project.authors = config.authors
+    for url in dir(config.project_urls):
+        if not url.startswith("_"):
+            setattr(
+                pyproject.project.urls,
+                url,
+                getattr(config.project_urls, url).replace("$name", name),
+            )
+    hassle = HassleProject(pyproject, dummy_projectdir, ["__init__.py", f"{name}.py"])
+    hassle.generate_files()
+    for f in dummy_projectdir.rglob("*"):
+        print(f)
+    for file in [
+        "pyproject.toml",
+        ".gitignore",
+        "README.md",
+        "LICENSE.txt",
+        ".vscode/settings.json",
+        f"tests/test_{name}.py",
+    ]:
+        assert (dummy_projectdir / file).exists()
+    print((dummy_projectdir / "pyproject.toml").read_text())
 
 
-def test__new_project__main():
-    class MockArgs:
-        def __init__(self):
-            self.name = "dummypack"
-            self.source_files = ["__init__.py", f"{self.name}.py"]
-            self.description = "dummypack"
-            self.dependencies = ["dep1", "dep2"]
-            self.keywords = ["key1", "key2"]
-            self.add_script = True
-            self.no_license = False
-            self.operating_system = None
-            self.not_package = False
-
-    root.mkcwd()
-    args = MockArgs()
-    new_project.main(args)
-    name = "dummypack"
-    dumpath = root / name
-
-    def assert_exists(file: str | Pathier) -> Pathier:
-        """Assert file exists and return
-        Path object to file"""
-        file_path = dumpath / file
-        assert file_path.exists()
-        return file_path
-
-    assert dumpath.exists()
-    readme = assert_exists("README.md")
-    assert name in readme.read_text()
-    pypr = assert_exists("pyproject.toml")
-    pypr_content = pypr.read_text()
-    for i in [args.dependencies, args.keywords]:
-        for x in i:
-            assert x in pypr_content
-    assert f"{name}.{name}:main" in pypr_content
-    dummysrc = assert_exists(Pathier("src") / name)
-    assert (dummysrc / "__init__.py").exists()
-    assert (dummysrc / f"{name}.py").exists()
-    tests = assert_exists("tests")
-    assert (tests / f"test_{name}.py").exists()
-    assert_exists(".gitignore")
-    assert_exists("LICENSE.txt")
-    assert_exists(".vscode")
-    assert_exists(".git")
-    root.parent.mkcwd()
-    dumpath.delete()
-
-
-def test_get_minimum_py_version():
-    proj = root - 1
-    src = hassle_utilities.get_project_code(proj / "src")
-    min_ver = hassle_utilities.get_minimum_py_version(src)
-    print(min_ver)
+def test__utilities_bump_version():
+    version = "0.0.0"
+    version = utilities.bump_version(version, "major")
+    assert version == "1.0.0"
+    version = utilities.bump_version(version, "minor")
+    assert version == "1.1.0"
+    version = utilities.bump_version(version, "patch")
+    assert version == "1.1.1"

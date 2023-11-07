@@ -6,8 +6,8 @@ build-backend = "hatchling.build"
 name = "hassle"
 description = "Create, build, test, and publish Python projects and packages."
 version = "2.13.4"
-requires-python = ">=3.10"
-dependencies = ["black", "isort", "pytest~=7.2.1", "coverage", "packagelister", "vermin==1.5.1", "pdoc", "twine", "auto-changelog", "bs4", "requests", "build", "pathier", "gitbetter"]
+requires-python = ">=3.10, <3.12"
+dependencies = ["black", "isort", "pytest~=7.2.1", "coverage", "packagelister", "pdoc", "twine", "auto-changelog", "bs4", "requests", "build", "pathier", "gitbetter"]
 readme = "README.md"
 keywords = ["devops", "packaging", "build", "test", "automation"]
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
@@ -22,12 +22,7 @@ Documentation = "https://github.com/matt-manes/hassle/tree/main/docs"
 "Source code" = "https://github.com/matt-manes/hassle/tree/main/src/hassle"
 
 [project.scripts]
-hassle = "hassle.hassle:main"
-new_project = "hassle.new_project:main"
-generate_tests = "hassle.generate_tests:main"
-run_tests = "hassle.run_tests:main"
-hassle_config = "hassle.hassle_config:main"
-check_pypi = "hassle.new_project:check_pypi_for_name_cli"
+hassle = "hassle.hassle_cli:main"
 
 [tool]
 [tool.pytest.ini_options]
