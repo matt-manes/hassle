@@ -105,9 +105,6 @@ class HassleShell(argshell.ArgShell):
             print(f"'{args.name}' already exists.")
             if not utilities.get_answer("Overwrite?"):
                 sys.exit()
-            else:
-                targetdir.delete()
-        self.project.projectdir = targetdir
         # Load config
         if not HassleConfig.exists():
             HassleConfig.warn()
@@ -118,25 +115,17 @@ class HassleShell(argshell.ArgShell):
             else:
                 print("Creating blank hassle_config.toml...")
                 HassleConfig.configure()
-        config = HassleConfig.load()
-        # Populate project
-        self.project.pyproject.project.name = args.name
-        self.project.pyproject.project.authors = config.authors
-        self.project.pyproject.project.description = args.description
-        self.project.pyproject.project.dependencies = args.dependencies
-        self.project.pyproject.project.keywords = args.keywords
-        if args.operating_system:
-            self.project.pyproject.project.classifiers[
-                2
-            ] = "Operating System ::" + " ".join(args.operating_system)
-        if args.add_script:
-            self.project.add_script(args.name, args.name)
-        self.project.source_files = args.source_files
-        self.project.generate_files()
-        if args.no_license:
-            self.project.pyproject.project.classifiers.pop(1)
-            (self.project.projectdir / "LICENSE.txt").delete()
-        self.project.save()
+        self.project = HassleProject.new(
+            targetdir,
+            args.name,
+            args.description,
+            args.dependencies,
+            args.keywords,
+            args.source_files,
+            args.operating_systems,
+            args.add_script,
+            args.no_license,
+        )
         # If not a package (just a project) move source code to top level.
         if args.not_package:
             for file in self.project.srcdir.iterdir():

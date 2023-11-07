@@ -302,6 +302,50 @@ class HassleProject:
         ]
         return cls(pyproject, projectdir, source_files)
 
+    @classmethod
+    def new(
+        cls,
+        targetdir: Pathier,
+        name: str,
+        description: str = "",
+        dependencies: list[str] = [],
+        keywords: list[str] = [],
+        source_files: list[str] = [],
+        operating_systems: list[str] = ["OS Independent"],
+        add_script: bool = False,
+        no_license: bool = False,
+    ) -> Self:
+        """Create and return a new hassle project."""
+        pyproject = Pyproject.from_template()
+        config = HassleConfig.load()
+        pyproject.project.name = name
+        pyproject.project.authors = config.authors
+        pyproject.project.description = description
+        pyproject.project.dependencies = dependencies
+        pyproject.project.keywords = keywords
+        pyproject.project.urls.Homepage = config.project_urls.Homepage.replace(
+            "$name", name
+        )
+        pyproject.project.urls.Documentation = (
+            config.project_urls.Documentation.replace("$name", name)
+        )
+        pyproject.project.urls.Source_code = config.project_urls.Source_code.replace(
+            "$name", name
+        )
+        if operating_systems:
+            pyproject.project.classifiers[2] = "Operating System ::" + " ".join(
+                operating_systems
+            )
+        hassle = cls(pyproject, targetdir, source_files)
+        if add_script:
+            hassle.add_script(name, name)
+        hassle.generate_files()
+        if no_license:
+            hassle.pyproject.project.classifiers.pop(1)
+            (hassle.projectdir / "LICENSE.txt").delete()
+        hassle.save()
+        return hassle
+
     def get_template(self, file_name: str) -> str:
         """Open are return the content of `{self.templatedir}/{file_name}`."""
         return (self.templatedir / file_name).read_text()

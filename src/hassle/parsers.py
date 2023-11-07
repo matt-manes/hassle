@@ -122,9 +122,9 @@ def get_new_project_parser() -> argshell.ArgShellParser:
 
     parser.add_argument(
         "-os",
-        "--operating_system",
+        "--operating_systems",
         type=str,
-        default=None,
+        default=["OS Independent"],
         nargs="*",
         help=""" List of operating systems this package will be compatible with.
         The default is OS Independent.
