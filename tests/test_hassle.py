@@ -1,8 +1,8 @@
 import pytest
 from pathier import Pathier
 
-from hassle.models import HassleConfig, Pyproject, HassleProject
 from hassle import utilities
+from hassle.models import HassleConfig, HassleProject, Pyproject
 
 root = Pathier(__file__).parent
 
