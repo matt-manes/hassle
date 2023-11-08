@@ -27,10 +27,6 @@ class HassleShell(argshell.ArgShell):
                 sys.exit()
 
     def _build(self, args: argshell.Namespace):
-        if not args.skip_tests and (not utilities.run_tests()):
-            raise RuntimeError(
-                f"ERROR: {Pathier.cwd().stem} failed testing.\nAbandoning build."
-            )
         self.project.format_source_files()
         self.project.update_dependencies(
             args.overwrite_dependencies, args.include_versions
@@ -49,6 +45,10 @@ class HassleShell(argshell.ArgShell):
     @argshell.with_parser(parsers.get_build_parser)
     def do_build(self, args: argshell.Namespace):
         """Build this project."""
+        if not args.skip_tests and not utilities.run_tests():
+            raise RuntimeError(
+                f"ERROR: {Pathier.cwd().stem} failed testing.\nAbandoning build."
+            )
         self._build(args)
 
     def do_check_pypi(self, name: str):
@@ -153,6 +153,10 @@ class HassleShell(argshell.ArgShell):
     @argshell.with_parser(parsers.get_update_parser)
     def do_update(self, args: argshell.Namespace):
         """Update this package."""
+        if not args.skip_tests and not utilities.run_tests():
+            raise RuntimeError(
+                f"ERROR: {Pathier.cwd().stem} failed testing.\nAbandoning build."
+            )
         self.project.bump_version(args.update_type)
         self.project.save()
         self._build(args)
