@@ -60,7 +60,11 @@ class HassleShell(argshell.ArgShell):
 
     def do_config(self, _: str = ""):
         """Print hassle config to terminal."""
-        print((root / "hassle_config.toml").read_text())
+        config = root / "hassle_config.toml"
+        if config.exists():
+            print(config.read_text())
+        else:
+            print("hassle_config.toml doesn't exist.")
 
     @argshell.with_parser(parsers.get_edit_config_parser)
     def do_configure(self, args: argshell.Namespace):
