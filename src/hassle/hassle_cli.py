@@ -123,7 +123,6 @@ class HassleShell(argshell.ArgShell):
             args.dependencies,
             args.keywords,
             args.source_files,
-            args.operating_systems,
             args.add_script,
             args.no_license,
         )

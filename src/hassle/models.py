@@ -311,7 +311,6 @@ class HassleProject:
         dependencies: list[str] = [],
         keywords: list[str] = [],
         source_files: list[str] = [],
-        operating_systems: list[str] = ["OS Independent"],
         add_script: bool = False,
         no_license: bool = False,
     ) -> Self:
@@ -332,10 +331,6 @@ class HassleProject:
         pyproject.project.urls.Source_code = config.project_urls.Source_code.replace(
             "$name", name
         )
-        if operating_systems:
-            pyproject.project.classifiers[2] = "Operating System ::" + " ".join(
-                operating_systems
-            )
         hassle = cls(pyproject, targetdir, source_files)
         if add_script:
             hassle.add_script(name, name)
