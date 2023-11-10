@@ -25,7 +25,7 @@ def get_edit_config_parser() -> argshell.ArgShellParser:
         "--github_username",
         type=str,
         default=None,
-        help=""" Your github account name. 
+        help=""" Your github username name. 
         When creating a new package, say with the name 'mypackage', the pyproject.toml 'Homepage' field  will be set to 
         'https://github.com/{github_username}/mypackage' 
         and the 'Source code' field will be set to 
@@ -37,17 +37,17 @@ def get_edit_config_parser() -> argshell.ArgShellParser:
         type=str,
         default=None,
         help=""" The template url to be used in your pyproject.toml file indicating where your project docs will be hosted.
-        Pass the url such that the spot the actual package name will go is held by '$name', 
+        Pass the url with '$name' as a placeholder for where the package name should go, 
         e.g. 'https://somedocswebsite/user/projects/$name'.
         If 'hassle_config.toml' didn't exist prior to running this tool and nothing is given for this arg, it will default to using the package's github url. 
-        e.g. for package 'mypackage' the url will be 'https://github.com/{your_github_name}/mypackage/tree/main/docs' """,
+        e.g. for package 'mypackage' the url will be 'https://github.com/{github_username}/mypackage/tree/main/docs' """,
     )
     parser.add_argument(
         "-t",
         "--tag_prefix",
         type=str,
         default=None,
-        help=""" When using Hassle to do a git tag, this will be prefixed to the front of the version number in the `pyproject.toml` file.""",
+        help=""" When using Hassle to do `git tag`, this will be prefixed to the front of the version number in the `pyproject.toml` file.""",
     )
     return parser
 
