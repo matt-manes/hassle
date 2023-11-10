@@ -38,7 +38,7 @@ class HassleShell(argshell.ArgShell):
     @argshell.with_parser(parsers.get_add_script_parser)
     def do_add_script(self, args: argshell.Namespace):
         """Add a script to the `pyproject.toml` file."""
-        self.project.add_script(args.name, args.file, args.function)
+        self.project.add_script(args.name, args.file.strip(".py"), args.function)
         self.project.save()
 
     @argshell.with_parser(parsers.get_build_parser)
