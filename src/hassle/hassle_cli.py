@@ -24,7 +24,6 @@ class HassleShell(argshell.ArgShell):
             except Exception as e:
                 print(f"{Pathier.cwd().stem} does not appear to be a Hassle project.")
                 print(e)
-                sys.exit()
 
     def _build(self, args: argshell.Namespace):
         self.project.format_source_files()
@@ -198,9 +197,16 @@ class HassleShell(argshell.ArgShell):
 
 def main():
     """ """
-    shell = HassleShell(sys.argv[1])
-    command = " ".join(sys.argv[1:]) or "help"
-    shell.onecmd(command)
+    command = "" if len(sys.argv) < 2 else sys.argv[1]
+    shell = HassleShell(command)
+    if command == "help":
+        input_ = f"help {sys.argv[2]}"
+    # Doing this so args that are multi-word strings don't get interpreted as separate args.
+    elif command:
+        input_ = f"{command} " + " ".join([f'"{arg}"' for arg in sys.argv[2:]])
+    else:
+        input_ = "help"
+    shell.onecmd(input_)
 
 
 if __name__ == "__main__":
