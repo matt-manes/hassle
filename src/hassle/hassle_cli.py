@@ -166,7 +166,9 @@ class HassleShell(argshell.ArgShell):
             print("Assuming no tag prefix.")
             tag_prefix = ""
         tag = f"{tag_prefix}{self.project.version}"
-        git.commit(f'* -m "chore: build {tag}"')
+        git.add_files([self.project.distdir, self.project.docsdir])
+        git.add(". -u")
+        git.commit(f'-m "chore: build {tag}"')
         # 'auto-changelog' generates based off of commits between tags
         # So to include the changelog in the tagged commit,
         # we have to tag the code, update/commit the changelog, delete the tag, and then retag
