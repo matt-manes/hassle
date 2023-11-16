@@ -78,7 +78,7 @@ class HassleShell(argshell.ArgShell):
 
     def do_is_published(self, _: str = ""):
         """Check if the most recent version of this package is published to PYPI."""
-        text = f"The most recent version of '{self.project.name}' has"
+        text = f"The most recent version of '{self.project.name}'"
         if self.project.latest_version_is_published():
             print(f"{text} has been published.")
         else:
@@ -145,7 +145,7 @@ class HassleShell(argshell.ArgShell):
         subprocess.run(["twine", "upload", self.project.distdir / "*"])
 
     def do_test(self, _: str):
-        """Invoke `pytest -s` with Coverage."""
+        """Invoke `pytest -s` with `Coverage`."""
         utilities.run_tests()
 
     @argshell.with_parser(parsers.get_update_parser)
@@ -166,8 +166,7 @@ class HassleShell(argshell.ArgShell):
             print("Assuming no tag prefix.")
             tag_prefix = ""
         tag = f"{tag_prefix}{self.project.version}"
-        git.add_all()
-        git.commit_all(f"chore: build {tag}")
+        git.commit(f'* -m "chore: build {tag}"')
         # 'auto-changelog' generates based off of commits between tags
         # So to include the changelog in the tagged commit,
         # we have to tag the code, update/commit the changelog, delete the tag, and then retag
