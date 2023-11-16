@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0.0 (2023-11-15)
+
+#### Refactorings
+
+* BREAKING: more or less completely rewrite package
+
+
 ## v2.13.4 (2023-11-04)
 
 #### Fixes
