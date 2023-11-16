@@ -90,7 +90,7 @@ def bump_version(current_version: str, bump_type: str) -> str:
 
     Raises an exception if `current_version` is formatted incorrectly or if `bump_type` isn't one of the aforementioned types.
     """
-    if not re.findall(r"[0-9].[0-9].[0-9]", current_version):
+    if not re.findall(r"[0-9]+.[0-9]+.[0-9]+", current_version):
         raise ValueError(
             f"{current_version} does not appear to match the required format of `x.x.x`."
         )
