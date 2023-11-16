@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0.1 (2023-11-16)
+
+#### Fixes
+
+* don't include current package when updating dependencies
+
+
 ## v3.0.0 (2023-11-15)
 
 #### Refactorings
