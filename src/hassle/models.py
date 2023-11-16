@@ -356,7 +356,9 @@ class HassleProject:
         try:
             black.main([str(self.projectdir)])
         except SystemExit as e:
-            print(f"{type(e).__name__}: {e}")
+            ...
+        except Exception as e:
+            raise e
 
     def latest_version_is_published(self) -> bool:
         """Check if the current version of this project has been published to pypi.org."""
