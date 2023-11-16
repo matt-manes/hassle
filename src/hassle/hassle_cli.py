@@ -76,10 +76,6 @@ class HassleShell(argshell.ArgShell):
         """Format all `.py` files with `isort` and `black`."""
         self.project.format_source_files()
 
-    def do_install(self, _: str = ""):
-        """Install this package."""
-        pip.main(["install", "."])
-
     def do_is_published(self, _: str = ""):
         """Check if the most recent version of this package is published to PYPI."""
         text = f"The most recent version of '{self.project.name}' has"
@@ -192,7 +188,7 @@ class HassleShell(argshell.ArgShell):
         if args.publish:
             self.do_publish()
         if args.install:
-            self.do_install()
+            pip.main(["install", "."])
 
 
 def main():
