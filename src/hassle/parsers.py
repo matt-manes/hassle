@@ -77,8 +77,7 @@ def get_new_project_parser() -> argshell.ArgShellParser:
         "-d",
         "--description",
         type=str,
-        default=[],
-        nargs="*",
+        default="",
         help=""" The package description to be added to the pyproject.toml file. """,
     )
 
@@ -108,8 +107,7 @@ def get_new_project_parser() -> argshell.ArgShellParser:
         "--add_script",
         action="store_true",
         help=""" Add section to pyproject.toml declaring the package should be installed with command line scripts added. 
-        The default is '{package_name} = "{package_name}.{package_name}:main".
-        You will need to manually change this field.""",
+        The default is '{package_name} = "{package_name}.{package_name}:main".""",
     )
 
     parser.add_argument(
@@ -208,14 +206,6 @@ def get_add_script_parser() -> argshell.ArgShellParser:
         help=""" The name of the function to invoke with the script. Defaults to `main`. """,
     )
     return parser
-
-
-def list_to_string_post_parser(args: argshell.Namespace) -> argshell.Namespace:
-    """Convert args that are lists into strings."""
-    # Quotes are getting stripped from command line so this is a workaround.
-    if "description" in dir(args):
-        args.description = " ".join(args.description)
-    return args
 
 
 def add_default_source_files(args: argshell.Namespace) -> argshell.Namespace:

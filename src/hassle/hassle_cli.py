@@ -86,7 +86,7 @@ class HassleShell(argshell.ArgShell):
 
     @argshell.with_parser(
         parsers.get_new_project_parser,
-        [parsers.list_to_string_post_parser, parsers.add_default_source_files],
+        [parsers.add_default_source_files],
     )
     def do_new(self, args: argshell.Namespace):
         """Create a new project."""
