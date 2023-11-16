@@ -420,12 +420,16 @@ class HassleProject:
             self.pyproject.project.dependencies = [
                 utilities.format_dependency(dependency, include_versions)
                 for dependency in dependencies
+                if dependency[0] != self.name
             ]
         else:
             for dependency in dependencies:
-                if all(
-                    dependency[0] not in existing_dependency
-                    for existing_dependency in self.pyproject.project.dependencies
+                if (
+                    all(
+                        dependency[0] not in existing_dependency
+                        for existing_dependency in self.pyproject.project.dependencies
+                    )
+                    and dependency[0] != self.name
                 ):
                     self.pyproject.project.dependencies.append(
                         utilities.format_dependency(dependency, include_versions)
