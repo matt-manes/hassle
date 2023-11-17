@@ -473,7 +473,7 @@ class HassleProject:
         raw_changelog = self._generate_changelog()
         # If there's no existing changelog, dump the generated one and get out of here.
         if not self.changelog_path.exists():
-            self.changelog_path.write_text(raw_changelog)
+            self.changelog_path.join(raw_changelog)
             return
 
         # Don't want to overwrite previously existing manual changes/edits
