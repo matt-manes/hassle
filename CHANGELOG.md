@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.2 (2023-11-17)
+
+#### Fixes
+
+* fix changelog getting dumped as a list instead of a string when being generated for the first time
+
 ## v3.0.1 (2023-11-16)
 
 #### Fixes
