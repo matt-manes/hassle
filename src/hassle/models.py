@@ -491,7 +491,7 @@ class HassleProject:
         # so we'll get rid of it if that's the case
         others = "#### Others"
         if changes.strip("\n").endswith(others):
-            changes = changes.strip("\n").strip(others)
+            changes = changes.strip("\n").replace(others, "\n\n")
         # If changes == "# Changelog\n\n" then there weren't actually any new changes
         if not changes == "# Changelog\n\n":
             self.changelog_path.write_text(changes + "".join(existing_changelog))
