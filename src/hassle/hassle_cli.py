@@ -196,7 +196,7 @@ def main():
     """ """
     command = "" if len(sys.argv) < 2 else sys.argv[1]
     shell = HassleShell(command)
-    if command == "help":
+    if command == "help" and len(sys.argv) == 3:
         input_ = f"help {sys.argv[2]}"
     # Doing this so args that are multi-word strings don't get interpreted as separate args.
     elif command:
