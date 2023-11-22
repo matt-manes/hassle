@@ -487,6 +487,11 @@ class HassleProject:
                 new_changes = raw_changelog[: raw_changelog.index(line)]
                 break
         changes = "".join(new_changes)
+        # "#### OTHERS" gets added to the changelog even when there's nothing for that category,
+        # so we'll get rid of it if that's the case
+        others = "#### Others"
+        if changes.strip("\n").endswith(others):
+            changes = changes.strip("\n").strip(others)
         # If changes == "# Changelog\n\n" then there weren't actually any new changes
         if not changes == "# Changelog\n\n":
             self.changelog_path.write_text(changes + "".join(existing_changelog))
