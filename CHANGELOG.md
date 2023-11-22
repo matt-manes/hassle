@@ -1,4 +1,11 @@
-Changelog
+# Changelog
+
+## v3.0.4 (2023-11-21)
+
+#### Refactorings
+
+* modify changelog formatting
+
 
 ## v3.0.3 (2023-11-21)
 
