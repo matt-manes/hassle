@@ -1,4 +1,13 @@
-# Changelog
+Changelog
+
+## v3.0.3 (2023-11-21)
+
+#### Fixes
+
+* 'hassle help' does the same as 'hassle' from the command line
+#### Performance improvements
+
+* remove empty 'Others' headers from generated changelog
 
 ## v3.0.2 (2023-11-17)
 
