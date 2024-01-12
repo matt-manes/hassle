@@ -1,12 +1,11 @@
 import re
 
 import coverage
-import packagelister
 import pytest
 import requests
 from bs4 import BeautifulSoup
 from gitbetter import Git
-from pathier import Pathier, Pathish
+from pathier import Pathier
 
 root = Pathier(__file__).parent
 
@@ -110,33 +109,6 @@ def bump_version(current_version: str, bump_type: str) -> str:
     elif bump_type == "patch":
         patch += 1
     return f"{major}.{minor}.{patch}"
-
-
-def get_dependencies(scandir: Pathish) -> list[tuple[str, str | None]]:
-    """Scan `scandir` and return a list of tuples like `(package, version)`.
-
-    The version may be `None`."""
-    packages = packagelister.scan(scandir)
-    # Replace package names for packages known to have a different pip install name than import name
-    swaps = (root / "package_name_swaps.toml").loads()
-    for key in swaps:
-        packages = swap_keys(packages, (key, swaps[key]))
-    dependencies = []
-    for package in packages:
-        dependencies.append((package, packages[package].get("version")))
-    return dependencies
-
-
-def format_dependency(dependency: tuple[str, str | None], include_version: bool) -> str:
-    """Format a dependency into a string.
-
-    If `include_version` and `dependency[1] is not None`, the return format will be `{package}~={version}`.
-
-    Otherwise, just `{package}`."""
-    if include_version and dependency[1]:
-        return f"{dependency[0]}~={dependency[1]}"
-    else:
-        return dependency[0]
 
 
 def on_primary_branch() -> bool:

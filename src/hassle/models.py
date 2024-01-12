@@ -8,6 +8,7 @@ import dacite
 import isort
 import requests
 from bs4 import BeautifulSoup, Tag
+from packagelister import packagelister
 from pathier import Pathier, Pathish
 from typing_extensions import Self
 
@@ -414,26 +415,31 @@ class HassleProject:
     def update_dependencies(
         self, overwrite_existing_packages: bool, include_versions: bool
     ):
-        """Scan project for dependencies and update the corresponding field in the pyproject model."""
-        dependencies = utilities.get_dependencies(self.projectdir)
+        """Scan project for dependencies and update the corresponding field in the pyproject model.
+
+        If `overwrite_existing_packages` is `False`, this function will only add a package if it isn't already listed,
+        but won't remove anything currently in the list.
+        Use this option to preserve manually added dependencies."""
+        project = packagelister.scan_dir(self.srcdir)
+        version_conditional = ">=" if include_versions else None
         if overwrite_existing_packages:
-            self.pyproject.project.dependencies = [
-                utilities.format_dependency(dependency, include_versions)
-                for dependency in dependencies
-                if dependency[0] != self.name
-            ]
+            self.pyproject.project.dependencies = project.get_formatted_requirements(
+                version_conditional
+            )
         else:
-            for dependency in dependencies:
-                if (
-                    all(
-                        dependency[0] not in existing_dependency
+            # Only add a package if it isn't already in the dependency list
+            self.pyproject.project.dependencies.extend(
+                [
+                    package.get_formatted_requirement(version_conditional)
+                    if version_conditional
+                    else package.distribution_name
+                    for package in project.requirements
+                    if all(
+                        package.distribution_name not in existing_dependency
                         for existing_dependency in self.pyproject.project.dependencies
                     )
-                    and dependency[0] != self.name
-                ):
-                    self.pyproject.project.dependencies.append(
-                        utilities.format_dependency(dependency, include_versions)
-                    )
+                ]
+            )
 
     def _generate_changelog(self) -> list[str]:
         if HassleConfig.exists():
