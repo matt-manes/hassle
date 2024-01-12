@@ -1,8 +1,8 @@
 [project]
 name = "hassle"
 description = "Create, build, test, and publish Python projects and packages."
-version = "3.0.4"
-dependencies = ["black", "isort", "pytest~=7.2.1", "coverage", "packagelister", "pdoc", "twine", "auto-changelog", "bs4", "requests", "build", "pathier", "gitbetter", "argshell", "pip", "dacite", "typing_extensions"]
+version = "3.1.0"
+dependencies = ["black", "isort", "pytest~=7.2.1", "coverage", "packagelister", "pdoc", "twine", "auto-changelog", "bs4", "requests", "build", "pathier", "gitbetter", "argshell", "pip", "dacite", "typing_extensions", "beautifulsoup4"]
 readme = "README.md"
 keywords = ["devops", "packaging", "build", "test", "automation"]
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"]
