@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.0 (2024-01-12)
+
+#### Refactorings
+
+* update packagelister usage
+
+
 ## v3.0.4 (2023-11-21)
 
 #### Refactorings
