@@ -52,6 +52,7 @@ class HassleShell(argshell.ArgShell):
 
     def do_check_pypi(self, name: str):
         """Check if the given package name is taken on pypi.org or not."""
+        name = name.strip('"')
         if utilities.check_pypi(name):
             print(f"{name} is already taken.")
         else:
