@@ -18,7 +18,7 @@ class HassleShell(argshell.ArgShell):
         if command == "new":
             # load a blank HassleProject
             self.project = HassleProject(Pyproject.from_template(), Pathier.cwd(), [])
-        else:
+        elif command != "check_pypi":
             try:
                 self.project = HassleProject.load(Pathier.cwd())
             except Exception as e:
