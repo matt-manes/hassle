@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.1.1 (2024-02-13)
+
+#### Fixes
+
+* strip quotes from name when running the `check_pypi` command
+* prevent error when using `check_pypi` command from outside a hassel project
+
+
 ## v3.1.0 (2024-01-12)
 
 #### Refactorings
