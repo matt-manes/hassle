@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from gitbetter import Git
 from pathier import Pathier
+import subprocess
 
 root = Pathier(__file__).parent
 
@@ -34,12 +35,10 @@ def run_tests() -> bool:
     """Invoke `coverage` and `pytest -s`.
 
     Returns `True` if all tests passed or if no tests were found."""
-    cover = coverage.Coverage()
-    cover.start()
-    results = pytest.main(["-s"])
-    cover.stop()
-    cover.report()
-    return results in [0, 5]
+    results = subprocess.run(["coverage", "run", "-m", "pytest", "-s"])
+    subprocess.run(["coverage", "report"])
+    subprocess.run(["coverage", "html"])
+    return results.returncode in [0, 5]
 
 
 def check_pypi(package_name: str) -> bool:
