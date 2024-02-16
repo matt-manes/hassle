@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.1.2 (2024-02-15)
+
+#### Fixes
+
+* exclude files from coverage report and html generation that aren't in the cwd
+* fix incorrect coverage numbers when testing a package imported by hassle or a package hassle imports
+
+
 ## v3.1.1 (2024-02-13)
 
 #### Fixes
