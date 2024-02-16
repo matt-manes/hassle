@@ -1,4 +1,5 @@
 import re
+import subprocess
 
 import coverage
 import pytest
@@ -6,7 +7,6 @@ import requests
 from bs4 import BeautifulSoup
 from gitbetter import Git
 from pathier import Pathier
-import subprocess
 
 root = Pathier(__file__).parent
 
