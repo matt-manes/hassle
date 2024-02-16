@@ -36,8 +36,8 @@ def run_tests() -> bool:
 
     Returns `True` if all tests passed or if no tests were found."""
     results = subprocess.run(["coverage", "run", "-m", "pytest", "-s"])
-    subprocess.run(["coverage", "report"])
-    subprocess.run(["coverage", "html"])
+    subprocess.run(["coverage", "report", f"--include={Pathier.cwd()}/*"])
+    subprocess.run(["coverage", "html", f"--include={Pathier.cwd()}/*"])
     return results.returncode in [0, 5]
 
 
