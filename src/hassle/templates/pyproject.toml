@@ -38,4 +38,6 @@ exclude = [
     "htmlcov", 
     "*.md"
     ]
+[tool.pyright]
+reportPrivateUsage = false
 [project.scripts]
