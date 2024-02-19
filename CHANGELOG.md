@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.1.3 (2024-02-18)
+
+#### Refactorings
+
+* improve type annotation coverage
+#### Others
+
+* add to sdist excludes
+
+
 ## v3.1.2 (2024-02-15)
 
 #### Fixes
