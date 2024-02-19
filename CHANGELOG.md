@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.4 (2024-02-19)
+
+#### Refactorings
+
+* add `reportPrivateUsage = false` for pyright to default pyproject template
+
+
 ## v3.1.3 (2024-02-18)
 
 #### Refactorings
