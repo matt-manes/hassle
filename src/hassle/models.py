@@ -2,6 +2,7 @@ import subprocess
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from functools import cached_property
+from typing import Any
 
 import black
 import dacite
@@ -100,7 +101,7 @@ class Pyproject:
     tool: Tool
 
     @staticmethod
-    def _swap_keys(data: dict) -> dict:
+    def _swap_keys(data: dict[str, Any]) -> dict[str, Any]:
         """Swap between original toml key and valid Python variable."""
         if "build-system" in data:
             data = utilities.swap_keys(data, ("build-system", "build_system"))
@@ -430,9 +431,11 @@ class HassleProject:
             # Only add a package if it isn't already in the dependency list
             self.pyproject.project.dependencies.extend(
                 [
-                    package.get_formatted_requirement(version_conditional)
-                    if version_conditional
-                    else package.distribution_name
+                    (
+                        package.get_formatted_requirement(version_conditional)
+                        if version_conditional
+                        else package.distribution_name
+                    )
                     for package in project.requirements
                     if all(
                         package.distribution_name not in existing_dependency

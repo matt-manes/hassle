@@ -1,5 +1,6 @@
 import subprocess
 import sys
+from typing import Any
 
 import argshell
 import pip
@@ -13,7 +14,7 @@ root = Pathier(__file__).parent
 
 
 class HassleShell(argshell.ArgShell):
-    def __init__(self, command: str, *args, **kwargs):
+    def __init__(self, command: str, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         if command == "new":
             # load a blank HassleProject

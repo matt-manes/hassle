@@ -1,5 +1,6 @@
 import re
 import subprocess
+from typing import Any
 
 import coverage
 import pytest
@@ -11,7 +12,7 @@ from pathier import Pathier
 root = Pathier(__file__).parent
 
 
-def swap_keys(data: dict, keys: tuple[str, str]):
+def swap_keys(data: dict[str, Any], keys: tuple[str, str]) -> dict[str, Any]:
     """Convert between keys in `data`.
     The order of `keys` doesn't matter.
     >>> data = {"one two": 1}
