@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.5 (2024-02-20)
+
+#### Others
+
+* add `create_py_typed()` to file generation
+
+
 ## v3.1.4 (2024-02-19)
 
 #### Refactorings
