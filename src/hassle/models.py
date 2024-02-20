@@ -538,6 +538,9 @@ class HassleProject:
     def create_tests(self):
         (self.testsdir / f"test_{self.name}.py").touch()
 
+    def create_py_typed(self):
+        (self.projectdir / "py.typed").touch()
+
     def generate_files(self):
         """Create all the necessary files.
 
