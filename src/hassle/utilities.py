@@ -2,8 +2,6 @@ import re
 import subprocess
 from typing import Any
 
-import coverage
-import pytest
 import requests
 from bs4 import BeautifulSoup
 from gitbetter import Git
@@ -32,11 +30,11 @@ def swap_keys(data: dict[str, Any], keys: tuple[str, str]) -> dict[str, Any]:
     return data
 
 
-def run_tests() -> bool:
+def run_tests(pytest_args: list[str] = []) -> bool:
     """Invoke `coverage` and `pytest -s`.
 
     Returns `True` if all tests passed or if no tests were found."""
-    results = subprocess.run(["coverage", "run", "-m", "pytest", "-s"])
+    results = subprocess.run(["coverage", "run", "-m", "pytest", "-s"] + pytest_args)
     subprocess.run(["coverage", "report", f"--include={Pathier.cwd()}/*"])
     subprocess.run(["coverage", "html", f"--include={Pathier.cwd()}/*"])
     return results.returncode in [0, 5]

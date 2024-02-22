@@ -1,3 +1,4 @@
+import shlex
 import subprocess
 import sys
 from typing import Any
@@ -146,9 +147,11 @@ class HassleShell(argshell.ArgShell):
                 return
         subprocess.run(["twine", "upload", self.project.distdir / "*"])
 
-    def do_test(self, _: str):
-        """Invoke `pytest -s` with `Coverage`."""
-        utilities.run_tests()
+    def do_test(self, args: str):
+        """Invoke `pytest -s` with `Coverage`.
+
+        Optionally, provide any other cli args pytest can accept."""
+        utilities.run_tests(shlex.split(args))
 
     @argshell.with_parser(parsers.get_update_parser)
     def do_update(self, args: argshell.Namespace):
