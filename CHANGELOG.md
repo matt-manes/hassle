@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.6 (2024-02-22)
+
+#### Others
+
+* `test` command can accept and pass arguments to pytest invocation
+
+
 ## v3.1.5 (2024-02-20)
 
 #### Others
