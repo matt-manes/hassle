@@ -15,17 +15,21 @@ root = Pathier(__file__).parent
 
 
 class HassleShell(argshell.ArgShell):
+    prompt = "hassle>"
+
     def __init__(self, command: str, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         if command == "new":
             # load a blank HassleProject
             self.project = HassleProject(Pyproject.from_template(), Pathier.cwd(), [])
-        elif command != "check_pypi":
+        elif command not in ["check_pypi", "help"]:
             try:
                 self.project = HassleProject.load(Pathier.cwd())
             except Exception as e:
-                print(f"{Pathier.cwd().stem} does not appear to be a Hassle project.")
-                print(e)
+                self.console.print(
+                    f"{Pathier.cwd().stem} does not appear to be a Hassle project."
+                )
+                self.console.print(e)
 
     def _build(self, args: argshell.Namespace):
         self.project.format_source_files()
@@ -56,17 +60,17 @@ class HassleShell(argshell.ArgShell):
         """Check if the given package name is taken on pypi.org or not."""
         name = name.strip('"')
         if utilities.check_pypi(name):
-            print(f"{name} is already taken.")
+            self.console.print(f"{name} is already taken.")
         else:
-            print(f"{name} is available.")
+            self.console.print(f"{name} is available.")
 
     def do_config(self, _: str = ""):
         """Print hassle config to terminal."""
         config = root / "hassle_config.toml"
         if config.exists():
-            print(config.read_text())
+            self.console.print(config.read_text())
         else:
-            print("hassle_config.toml doesn't exist.")
+            self.console.print("hassle_config.toml doesn't exist.")
 
     @argshell.with_parser(parsers.get_edit_config_parser)
     def do_configure(self, args: argshell.Namespace):
@@ -83,9 +87,9 @@ class HassleShell(argshell.ArgShell):
         """Check if the most recent version of this package is published to PYPI."""
         text = f"The most recent version of '{self.project.name}'"
         if self.project.latest_version_is_published():
-            print(f"{text} has been published.")
+            self.console.print(f"{text} has been published.")
         else:
-            print(f"{text} has not been published.")
+            self.console.print(f"{text} has not been published.")
 
     @argshell.with_parser(
         parsers.get_new_project_parser,
@@ -95,13 +99,13 @@ class HassleShell(argshell.ArgShell):
         """Create a new project."""
         # Check if this name is taken.
         if not args.not_package and utilities.check_pypi(args.name):
-            print(f"{args.name} already exists on pypi.org")
+            self.console.print(f"{args.name} already exists on pypi.org")
             if not utilities.get_answer("Continue anyway?"):
                 sys.exit()
         # Check if targetdir already exists
         targetdir = Pathier.cwd() / args.name
         if targetdir.exists():
-            print(f"'{args.name}' already exists.")
+            self.console.print(f"'{args.name}' already exists.")
             if not utilities.get_answer("Overwrite?"):
                 sys.exit()
         # Load config
@@ -112,7 +116,7 @@ class HassleShell(argshell.ArgShell):
             ):
                 raise Exception("Aborting new package creation")
             else:
-                print("Creating blank hassle_config.toml...")
+                self.console.print("Creating blank hassle_config.toml...")
                 HassleConfig.configure()
         self.project = HassleProject.new(
             targetdir,
@@ -136,13 +140,12 @@ class HassleShell(argshell.ArgShell):
 
     def do_publish(self, _: str = ""):
         """Publish this package.
-
         You must have 'twine' installed and set up to use this command."""
         if not utilities.on_primary_branch():
-            print(
+            self.console.print(
                 "WARNING: You are trying to publish a project that does not appear to be on its main branch."
             )
-            print(f"You are on branch '{Git().current_branch}'")
+            self.console.print(f"You are on branch '{Git().current_branch}'")
             if not utilities.get_answer("Continue anyway?"):
                 return
         subprocess.run(["twine", "upload", self.project.distdir / "*"])
@@ -168,7 +171,7 @@ class HassleShell(argshell.ArgShell):
             tag_prefix = HassleConfig.load().git.tag_prefix
         else:
             HassleConfig.warn()
-            print("Assuming no tag prefix.")
+            self.console.print("Assuming no tag prefix.")
             tag_prefix = ""
         tag = f"{tag_prefix}{self.project.version}"
         git.add_files([self.project.distdir, self.project.docsdir])
