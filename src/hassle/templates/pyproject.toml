@@ -36,7 +36,9 @@ exclude = [
     "tests",
     "docs", 
     "htmlcov", 
-    "*.md"
+    "*.md",
+    "assets",
+    "imgs"
     ]
 [tool.pyright]
 reportPrivateUsage = false
