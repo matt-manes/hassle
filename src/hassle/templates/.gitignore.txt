@@ -4,5 +4,6 @@ __pycache__
 .pytest_cache
 *scratch*
 *.txt
+!LICENSE.txt
 *.log
 *logs
