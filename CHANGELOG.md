@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.8 (2024-02-24)
+
+#### Others
+
+* add 'imgs' and 'assets' to default sdist excludes
+
+
 ## v3.1.7 (2024-02-24)
 
 #### Refactorings
