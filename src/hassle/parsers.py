@@ -131,12 +131,13 @@ def get_build_parser() -> argshell.ArgShellParser:
     """Returns a build parser."""
     parser = argshell.ArgShellParser(
         "build",
-        description=""" Run the build process:
-         * Run tests (abandoning build on failure)
-         * Sort imports and format with Black
-         * Update dependencies
-         * Generate docs
-         * Invoke `build` module""",
+        description=""" 
+Run the build process:
+    * Run tests (abandoning build on failure)
+    * Sort imports and format with Black
+    * Update dependencies
+    * Generate docs
+    * Invoke `build` module""",
     )
     parser.add_argument(
         "-s", "--skip_tests", action="store_true", help=""" Skip running tests. """
@@ -161,7 +162,7 @@ def get_update_parser() -> argshell.ArgShellParser:
     parser = get_build_parser()
     parser.prog = "update"
     parser.description = """
-    Update this package:
+Update this package:
     * Run the build command (run `hassle build -h` for info)
     * Increment project version
     * Update/create changelog
@@ -202,6 +203,7 @@ def get_add_script_parser() -> argshell.ArgShellParser:
     parser.add_argument(
         "function",
         nargs="?",
+        type=str,
         default="main",
         help=""" The name of the function to invoke with the script. Defaults to `main`. """,
     )
