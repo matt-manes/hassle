@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.1.7 (2024-02-24)
+
+#### Refactorings
+
+* use `self.console.print` instead of `print`
+#### Docs
+
+* rewrite readme with svgs
+#### Others
+
+* reformat description strings
+* add `!LICENSE.txt` to default ignore list
+* add to gitignore
+
+
 ## v3.1.6 (2024-02-22)
 
 #### Others
