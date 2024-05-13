@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.1.9 (2024-05-12)
+
+#### Fixes
+
+* fix readme template getting excluded from dist
+
+
 ## v3.1.8 (2024-02-24)
 
 #### Others
